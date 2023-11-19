@@ -18,8 +18,30 @@ $porPagina = 10; // Número de productos por página
 $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Página actual
 $inicio = ($pagina - 1) * $porPagina; // Calcular el inicio de los resultados
 
-// Consulta para obtener productos paginados
-$query = "SELECT * FROM producto LIMIT $inicio, $porPagina";
+// Consulta para obtener todas las categorías disponibles
+$queryCategorias = "SELECT DISTINCT categoria FROM producto";
+$resultadoCategorias = $conexion->query($queryCategorias);
+
+if (!$resultadoCategorias) {
+    die("Error en la consulta de categorías: " . $conexion->error);
+}
+
+$categorias = [];
+
+while ($filaCategoria = $resultadoCategorias->fetch_assoc()) {
+    $categorias[] = $filaCategoria['categoria'];
+}
+
+// Verifica si se ha seleccionado una categoría
+$categoriaSeleccionada = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+
+// Consulta para obtener productos con paginación y filtrado por categoría
+$query = "SELECT * FROM producto";
+if ($categoriaSeleccionada) {
+    $query .= " WHERE categoria = '$categoriaSeleccionada'";
+}
+$query .= " LIMIT $inicio, $porPagina";
+
 $resultado = $conexion->query($query);
 
 if (!$resultado) {
@@ -34,6 +56,10 @@ while ($fila = $resultado->fetch_assoc()) {
 
 // Consulta para contar el total de productos
 $totalQuery = "SELECT COUNT(*) as total FROM producto";
+if ($categoriaSeleccionada) {
+    $totalQuery .= " WHERE categoria = '$categoriaSeleccionada'";
+}
+
 $totalResult = $conexion->query($totalQuery);
 $totalProductos = $totalResult->fetch_assoc()['total'];
 
@@ -57,7 +83,7 @@ $conexion->close();
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <!-- Mueve el logotipo a la derecha utilizando ml-auto -->
-            <img src="/chedraui/img/oxxo-gaming.png" alt="logo" width="150px" class="ml-auto">
+            <img src="../chedraui/img/oxxo-gaming.png" alt="logo" width="150px" class="ml-auto">
             <!-- Botón de hamburguesa para dispositivos móviles -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -94,17 +120,28 @@ $conexion->close();
         </div>
     </nav>
 
-    <div class="container">
-        <div class="row">
+    <div class="container mt-5">
+        <!-- Agrega un formulario de selección de categoría -->
+        <form method="GET" action="admin.php" class="mb-3">
+            <label for="categoria">Categoría:</label>
+            <select name="categoria" id="categoria" class="form-control">
+                <option value="" <?php echo ($categoriaSeleccionada == '') ? 'selected' : ''; ?>>Todas las categorías</option>
+                <?php foreach ($categorias as $categoria): ?>
+                    <option value="<?php echo $categoria; ?>" <?php echo ($categoriaSeleccionada == $categoria) ? 'selected' : ''; ?>><?php echo $categoria; ?></option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
+        </form>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php foreach ($producto as $producto): ?>
-                <div class="col-md-4">
-                    <div class="card">
+                <div class="col">
+                    <div class="card h-100">
                         <img src="<?php echo $producto['imagen_url']; ?>" class="card-img-top" alt="<?php echo $producto['nombre']; ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $producto['nombre']; ?></h5>
                             <p class="card-text"><?php echo $producto['descripcion']; ?></p>
                             <p class="card-text">$<?php echo $producto['precio']; ?></p>
-                            
                             <!-- Modifica el formulario para agregar al carrito -->
                             <form method="GET" action="carrito.php">
                                 <input type="hidden" name="agregar" value="<?php echo $producto['idProducto']; ?>">
@@ -115,18 +152,18 @@ $conexion->close();
                 </div>
             <?php endforeach; ?>
         </div>
-    </div>
 
-    <!-- Agrega la sección de paginación después de tu lista de productos -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                <li class="page-item <?php echo ($i == $pagina) ? 'active' : ''; ?>">
-                    <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-        </ul>
-    </nav>
+        <!-- Agrega la paginación -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                    <li class="page-item <?php echo ($i == $pagina) ? 'active' : ''; ?>">
+                        <a class="page-link" href="?pagina=<?php echo $i; ?><?php echo ($categoriaSeleccionada) ? '&categoria=' . $categoriaSeleccionada : ''; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+            </ul>
+        </nav>
+    </div>
 
     <!-- Agrega el enlace a la biblioteca Font Awesome para el icono del carrito -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

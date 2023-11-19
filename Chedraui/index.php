@@ -18,8 +18,30 @@ $porPagina = 10; // Número de productos por página
 $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Página actual, predeterminada a 1
 $offset = ($paginaActual - 1) * $porPagina;
 
-// Consulta para obtener productos con paginación
-$query = "SELECT * FROM producto LIMIT $offset, $porPagina";
+// Consulta para obtener todas las categorías disponibles
+$queryCategorias = "SELECT DISTINCT categoria FROM producto";
+$resultadoCategorias = $conexion->query($queryCategorias);
+
+if (!$resultadoCategorias) {
+    die("Error en la consulta de categorías: " . $conexion->error);
+}
+
+$categorias = [];
+
+while ($filaCategoria = $resultadoCategorias->fetch_assoc()) {
+    $categorias[] = $filaCategoria['categoria'];
+}
+
+// Verifica si se ha seleccionado una categoría
+$categoriaSeleccionada = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+
+// Consulta para obtener productos con paginación y filtrado por categoría
+$query = "SELECT * FROM producto";
+if ($categoriaSeleccionada) {
+    $query .= " WHERE categoria = '$categoriaSeleccionada'";
+}
+$query .= " LIMIT $offset, $porPagina";
+
 $resultado = $conexion->query($query);
 
 if (!$resultado) {
@@ -34,6 +56,10 @@ while ($fila = $resultado->fetch_assoc()) {
 
 // Consulta para contar el número total de productos
 $queryTotal = "SELECT COUNT(*) as total FROM producto";
+if ($categoriaSeleccionada) {
+    $queryTotal .= " WHERE categoria = '$categoriaSeleccionada'";
+}
+
 $resultadoTotal = $conexion->query($queryTotal);
 
 if (!$resultadoTotal) {
@@ -62,7 +88,7 @@ $conexion->close();
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <!-- Mueve el logotipo a la derecha utilizando ml-auto -->
-            <img src="/chedraui/img/oxxo-gaming.png" alt="logo" width="150px" class="ml-auto">
+            <img src="../chedraui/img/oxxo-gaming.png" alt="logo" width="150px" class="ml-auto">
             <!-- Botón de hamburguesa para dispositivos móviles -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -99,6 +125,18 @@ $conexion->close();
         </div>
     </nav>
     <div class="container mt-5">
+        <!-- Agrega un formulario de selección de categoría -->
+        <form method="GET" action="index.php" class="mb-3">
+            <label for="categoria">Categoría:</label>
+            <select name="categoria" id="categoria" class="form-control">
+                <option value="" <?php echo ($categoriaSeleccionada == '') ? 'selected' : ''; ?>>Todas las categorías</option>
+                <?php foreach ($categorias as $categoria): ?>
+                    <option value="<?php echo $categoria; ?>" <?php echo ($categoriaSeleccionada == $categoria) ? 'selected' : ''; ?>><?php echo $categoria; ?></option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
+        </form>
+
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <?php foreach ($producto as $producto): ?>
                 <div class="col">
