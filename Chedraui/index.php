@@ -14,6 +14,29 @@ foreach ($passwords as $password) {
     }
 }
 
+// Iniciar sesión
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (isset($_SESSION['usuario'])) {
+    $usuario = $_SESSION['usuario'];
+    $botonIniciarSesion = "<li class='nav-item dropdown'>
+                            <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                $usuario
+                            </a>
+                            <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
+                                <a class='dropdown-item' href='perfil.php'>Ver Perfil</a>
+                                <div class='dropdown-divider'></div>
+                                <a class='dropdown-item' href='logout.php'>Cerrar Sesión</a>
+                            </div>
+                          </li>";
+} else {
+    $botonIniciarSesion = "<li class='nav-item'>
+                            <a class='nav-link' href='login.php'>Iniciar Sesión</a>
+                          </li>";
+}
+
+
 // Verificar si se estableció una conexión
 if (!$conn) {
     die("No se pudo conectar a la base de datos.");

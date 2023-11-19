@@ -34,4 +34,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: index.php");
     exit();
 }
+// ...
+
+// Iniciar sesión
+session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (isset($_SESSION['usuario'])) {
+    $usuario = $_SESSION['usuario'];
+    $botonInicioSesion = "";  // No se muestra el botón de inicio de sesión
+    $menuUsuario = "<li class='nav-item dropdown'>
+                        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                            $usuario
+                        </a>
+                        <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
+                            <a class='dropdown-item' href='perfil.php'>Ver Perfil</a>
+                            <div class='dropdown-divider'></div>
+                            <a class='dropdown-item' href='cerrar_sesion.php'>Cerrar Sesión</a>
+                        </div>
+                    </li>";
+} else {
+    $usuario = '';  // No hay usuario
+    $botonInicioSesion = "<li class='nav-item'>
+                            <a class='nav-link' href='login.php'>Iniciar Sesión</a>
+                        </li>";
+    $menuUsuario = '';  // No se muestra el menú de usuario
+}
+
 ?>
