@@ -1,16 +1,31 @@
 <?php
-// Conexión a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = "Winsome1";
-$database = "chedraui";
+function conectarBaseDatos($contrasena) {
+    $conn = @new mysqli("localhost", "root", $contrasena, "chedraui");
+    
+    if ($conn->connect_error) {
+        // Devuelve false si la conexión falla
+        return false;
+    }
+    
+    return $conn;
+}
 
-// Crear conexión
-$conexion = new mysqli($servername, $username, $password, $database);
+$passwords = array("Winsome1", "Ribendiaz232");
+$conn = null;
 
-// Verificar la conexión
-if ($conexion->connect_error) {
-    die("Error en la conexión a la base de datos: " . $conexion->connect_error);
+// Intentar conectar con las contraseñas
+foreach ($passwords as $password) {
+    $conn = conectarBaseDatos($password);
+    
+    // Si la conexión es exitosa, sal del bucle
+    if ($conn) {
+        break;
+    }
+}
+
+// Verificar si se estableció una conexión
+if (!$conn) {
+    die("No se pudo conectar a la base de datos.");
 }
 
 // Parámetros de paginación
