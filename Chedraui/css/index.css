@@ -1,0 +1,94 @@
+/* Estilos para los productos */
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-card h5 {
+    font-size: 1.25rem;
+    margin: 10px 0;
+}
+
+.product-card p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.product-card .price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.product-card button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.product-card button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para la fila de productos */
+.product-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Estilos para el contenedor principal */
+.container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* Estilos para el título de la página */
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la navegación */
+nav {
+    background-color: #131418;
+    color: #f2f5f7;
+    padding: 10px;
+}
+
+.nav-links li a {
+    color: #f2f5f7;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.nav-links li a:hover {
+    color: #61DAFB;
+}
+
+.login-button,
+.join-button {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.login-button:hover,
+.join-button:hover {
+    background-color: #61DAFB;
+    border-color: #61DAFB;
+}
