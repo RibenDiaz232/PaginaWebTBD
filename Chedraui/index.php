@@ -1,22 +1,13 @@
 <?php
-function conectarBaseDatos($contrasena) {
-    $conn = @new mysqli("localhost", "root", $contrasena, "chedraui");
-    
-    if ($conn->connect_error) {
-        // Devuelve false si la conexión falla
-        return false;
-    }
-    
-    return $conn;
-}
+include_once 'conexion.php';
 
-$passwords = array("Winsome1", "Ribendiaz232");
 $conn = null;
 
 // Intentar conectar con las contraseñas
+$passwords = array("Winsome1", "Ribendiaz232");
 foreach ($passwords as $password) {
     $conn = conectarBaseDatos($password);
-    
+
     // Si la conexión es exitosa, sal del bucle
     if ($conn) {
         break;

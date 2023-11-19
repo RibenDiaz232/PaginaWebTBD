@@ -1,18 +1,18 @@
 <?php
-// Conexión a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = "Winsome1";
-$database = "chedraui";
+include_once 'conexion.php';
 
-// Crear conexión
-$conexion = new mysqli($servername, $username, $password, $database);
+$conn = null;
 
-// Verificar la conexión
-if ($conexion->connect_error) {
-    die("Error en la conexión a la base de datos: " . $conexion->connect_error);
+// Intentar conectar con las contraseñas
+$passwords = array("Winsome1", "Ribendiaz232");
+foreach ($passwords as $password) {
+    $conn = conectarBaseDatos($password);
+
+    // Si la conexión es exitosa, sal del bucle
+    if ($conn) {
+        break;
+    }
 }
-
 // Configurar la paginación
 $porPagina = 10; // Número de productos por página
 $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Página actual

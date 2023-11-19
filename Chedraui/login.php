@@ -10,7 +10,6 @@
 </head>
 <body>
 	<?php 
-	include "conexion.php";
 	include "loginconexion.php";
 	?>
 	<div class="section">
