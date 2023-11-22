@@ -1,6 +1,10 @@
 <?php
 // Conexión a la base de datos y comprobación de la sesión
 include "conexion.php";
+// Verificar si se estableció una conexión
+if (!$conexion) {
+    die("No se pudo conectar a la base de datos.");
+}
 session_start();
 if (!isset($_SESSION['email'])) {
     header("location: login.php");
