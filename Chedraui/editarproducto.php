@@ -1,6 +1,7 @@
 <?php
 include "conexion.php"; // Incluye el archivo de conexión a la base de datos
 
+
 // Verificar si se ha enviado un ID de producto válido
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $idProducto = $_GET['id'];
