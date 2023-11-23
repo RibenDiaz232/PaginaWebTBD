@@ -20,7 +20,7 @@ function conectarBaseDatos($contrasena) {
     return false;
 }
 
-$passwords = array("Winsome1", "Ribendiaz232", "Pon tu contraseña Martín");
+$passwords = array("Winsome1", "Ribendiaz232", "M4rt1n-34*");
 $conexion = null;
 
 // Intentar conectar con las contraseñas
