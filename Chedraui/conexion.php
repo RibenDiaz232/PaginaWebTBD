@@ -1,27 +1,32 @@
 <?php
-$host = "localhost";
-$usuario = "root";
-$contrasena = null;
-$base_de_datos = "Chedraui";
-
 function conectarBaseDatos($contrasena) {
-    $conexion = @new mysqli("localhost", "root", $contrasena, "Chedraui");
-
-    if ($conexion->connect_error) {
-        // Devuelve false si la conexión falla
-        return false;
+    global $host, $usuario, $base_de_datos;
+    
+    // Solo intentar conectar si la contraseña no está vacía
+    if (!empty($contrasena)) {
+        try {
+            $conexion = new mysqli("localhost", "root", $contrasena, "chedraui");
+            
+            // Si la conexión es exitosa, regresa la conexión
+            if (!$conexion->connect_error) {
+                return $conexion;
+            }
+        } catch (Exception $e) {
+            // En caso de error, continuar con la siguiente contraseña
+        }
     }
 
-    return $conexion;
+    // Si la contraseña está vacía o la conexión falla, regresa false
+    return false;
 }
 
-$passwords = array("Winsome1", "Ribendiaz232");
-$conexion = false; // Cambiado el nombre de la variable a $conexion
+$passwords = array("Winsome1", "Ribendiaz232", "M4rt1n-34*");
+$conexion = null;
 
 // Intentar conectar con las contraseñas
 foreach ($passwords as $password) {
     $conexion = conectarBaseDatos($password);
-
+    
     // Si la conexión es exitosa, sal del bucle
     if ($conexion) {
         break;
@@ -32,6 +37,4 @@ foreach ($passwords as $password) {
 if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
-
-// Ahora puedes realizar consultas con $conexion
 ?>

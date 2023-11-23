@@ -2,19 +2,6 @@
 <?php
 include_once 'conexion.php';
 
-$conn = null;
-
-// Intentar conectar con las contraseñas
-$passwords = array("Winsome1", "Ribendiaz232");
-foreach ($passwords as $password) {
-    $conn = conectarBaseDatos($password);
-
-    // Si la conexión es exitosa, sal del bucle
-    if ($conn) {
-        break;
-    }
-}
-
 // Iniciar sesión
 session_start();
 
@@ -39,7 +26,7 @@ if (isset($_SESSION['usuario'])) {
 
 
 // Verificar si se estableció una conexión
-if (!$conn) {
+if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
 

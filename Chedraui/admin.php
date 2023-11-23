@@ -1,18 +1,11 @@
 <?php
+
 include_once 'conexion.php';
-
-$conn = null;
-
-// Intentar conectar con las contraseñas
-$passwords = array("Winsome1", "Ribendiaz232");
-foreach ($passwords as $password) {
-    $conn = conectarBaseDatos($password);
-
-    // Si la conexión es exitosa, sal del bucle
-    if ($conn) {
-        break;
-    }
+// Verificar si se estableció una conexión
+if (!$conexion) {
+    die("No se pudo conectar a la base de datos.");
 }
+
 // Configurar la paginación
 $porPagina = 10; // Número de productos por página
 $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Página actual
@@ -103,7 +96,7 @@ $conexion->close();
                         <a class="nav-link" href="usuarios.php">Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="listadeproductos.php">Agregar Productos</a>
+                        <a class="nav-link" href="listadeproductos.php">Agregar los Productos</a>
                     </li>
                 </ul>
             </div>

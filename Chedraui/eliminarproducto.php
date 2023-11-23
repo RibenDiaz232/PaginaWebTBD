@@ -1,6 +1,11 @@
 <?php
 include "conexion.php"; // Incluye el archivo de conexión a la base de datos
 
+// Verificar si se estableció una conexión
+if (!$conexion) {
+    die("No se pudo conectar a la base de datos.");
+}
+
 if (isset($_GET['id'])) {
     $idProducto = $_GET['id'];
     
