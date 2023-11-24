@@ -1,3 +1,4 @@
+
 <?php
 include_once 'conexion.php';
 
@@ -97,6 +98,7 @@ $conexion->close();
     <meta charset="UTF-8">
     <title>Inicio</title>
     <!-- Agrega el enlace a los archivos de Bootstrap CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 </head>
