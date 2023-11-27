@@ -1,34 +1,26 @@
 <?php
-// Conexión a la base de datos
 $servername = "localhost";
 $username = "root";
 $password = "Winsome1";
 $database = "chedraui";
 
-// Crear conexión
-$conexion = new mysqli($servername, $username, $password, $database);
+try {
+    // Intenta conectar a la base de datos
+    $conexion = new mysqli($servername, $username, $password, $database);
 
-// Verificar la conexión
-if ($conexion->connect_error) {
-    die("Error en la conexión a la base de datos: " . $conexion->connect_error);
+    // Verificar la conexión
+    if ($conexion->connect_error) {
+        die("Error en la conexión a la base de datos: " . $conexion->connect_error);
+    }
+
+    // Resto del código...
+
+    // Cerrar la conexión
+    $conexion->close();
+} catch (mysqli_sql_exception $e) {
+    // Captura cualquier excepción de MySQLi
+    die("Error: " . $e->getMessage());
 }
-
-// Consulta para obtener los productos más recientes
-$query = "SELECT * FROM producto"; // Sin límite
-$resultado = $conexion->query($query);
-
-if (!$resultado) {
-    die("Error en la consulta: " . $conexion->error);
-}
-
-$producto = [];
-
-while ($fila = $resultado->fetch_assoc()) {
-    $producto[] = $fila;
-}
-
-// Cerrar la conexión
-$conexion->close();
 ?>
 
 <!DOCTYPE html>
