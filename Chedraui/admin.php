@@ -73,46 +73,45 @@ $conexion->close();
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <!-- Mueve el logotipo a la derecha utilizando ml-auto -->
-            <img src="../chedraui/img/oxxo-gaming.png" alt="logo" width="150px" class="ml-auto">
-            <!-- Botón de hamburguesa para dispositivos móviles -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Catagoria</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ventas.php">Ventas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="usuarios.php">Usuarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listadeproductos.php">Agregar los Productos</a>
-                    </li>
-                </ul>
-            </div>
-            <ul class="navbar-nav ml-auto">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Tu Tienda</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="login.php">Iniciar Sesión</a>
+                    <a class="nav-link" href="index.php">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="carrito.php">
-                        <i class="fas fa-shopping-cart"></i> Carrito
-                    </a>
+                    <a class="nav-link" href="#">Categoría</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Ventas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="listadeproductos.php">Agregar los productos</a>
                 </li>
             </ul>
         </div>
-    </nav>
-
+        <form method="GET" action="index.php" class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Buscar categoría" aria-label="Search" name="categoria">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        </form>
+        <ul class="navbar-nav ml-auto">
+            <?php echo $botonIniciarSesion; ?>
+            <li class="nav-item">
+                <a class="nav-link" href="carrito.php">
+                    <i class="fas fa-shopping-cart"></i> Carrito
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
     <div class="container mt-5">
         <!-- Agrega un formulario de selección de categoría -->
         <form method="GET" action="admin.php" class="mb-3">
