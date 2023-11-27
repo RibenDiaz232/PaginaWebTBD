@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Redirigir según el tipo de usuario
             if ($esAdministrador) {
+                
                 header("Location: admin.php");
                 exit();
             } else {
