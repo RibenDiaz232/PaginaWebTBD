@@ -46,30 +46,40 @@ mysqli_close($conexion);
 <head>
     <title>Modificar Usuario</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <!-- Agrega las clases de Bootstrap para la tabla -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
     <h1>Modificar Usuario</h1>
     <form method="post" action="">
-        <table>
-            <tr>
-                <td><label for="nombre">Nombre:</label></td>
-                <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="telefono">Teléfono:</label></td>
-                <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="correo">Correo:</label></td>
-                <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>"></td>
-            </tr>
+        <!-- Utiliza las clases de Bootstrap para la tabla -->
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col">Correo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>"></td>
+                    <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>"></td>
+                    <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>"></td>
+                </tr>
+            </tbody>
         </table>
 
         <input type="submit" value="Guardar cambios">
     </form>
+
+    <!-- Incluye el script de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
-
-
