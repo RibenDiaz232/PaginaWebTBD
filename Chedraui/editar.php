@@ -47,32 +47,16 @@ mysqli_close($conexion);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Modificar Usuario</title>
-    <style>
-        body {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        table {
-            margin: auto;
-            width: 50%;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        .btn-primary {
-            margin-top: 10px;
-        }
-    </style>
+    <!-- Agrega las clases de Bootstrap para el estilo -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
-    <h1>Modificar Usuario</h1>
-    <form method="post" action="">
-        <table>
-            <thead>
+    <h1 class="text-center mt-5">Modificar Usuario</h1>
+    <form method="post" action="" class="mt-5 text-center">
+        <!-- Utiliza las clases de Bootstrap para centrar y dar estilo a la tabla -->
+        <table class="table mx-auto w-50">
+            <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
@@ -83,15 +67,4 @@ mysqli_close($conexion);
             <tbody>
                 <tr>
                     <th scope="row">1</th>
-                    <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>"></td>
-                    <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>"></td>
-                    <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <input type="submit" value="Guardar cambios" class="btn btn-primary">
-    </form>
-</body>
-
-</html>
+                    <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>" cla
