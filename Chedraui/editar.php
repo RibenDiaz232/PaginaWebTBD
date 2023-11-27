@@ -42,20 +42,37 @@ mysqli_close($conexion);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Modificar Usuario</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <!-- Agrega las clases de Bootstrap para la tabla -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        table {
+            margin: auto;
+            width: 50%;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Modificar Usuario</h1>
     <form method="post" action="">
-        <!-- Utiliza las clases de Bootstrap para la tabla -->
-        <table class="table">
-            <thead class="thead-dark">
+        <table>
+            <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nombre</th>
@@ -73,13 +90,8 @@ mysqli_close($conexion);
             </tbody>
         </table>
 
-        <input type="submit" value="Guardar cambios">
+        <input type="submit" value="Guardar cambios" class="btn btn-primary">
     </form>
-
-    <!-- Incluye el script de Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
