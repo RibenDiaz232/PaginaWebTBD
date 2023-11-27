@@ -1,10 +1,33 @@
 <?php
-include ("conexion.php");
+include("conexion.php");
+
 // Verificar si se estableció una conexión
 if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
+
+// Consulta para obtener los productos
+$query = "SELECT * FROM producto"; // Puedes ajustar la consulta según tus necesidades
+
+// Realizar la consulta
+$resultado = mysqli_query($conexion, $query);
+
+if (!$resultado) {
+    die("Error en la consulta: " . mysqli_error($conexion));
+}
+
+// Inicializar el array de productos
+$producto = [];
+
+// Obtener los resultados de la consulta
+while ($fila = mysqli_fetch_assoc($resultado)) {
+    $producto[] = $fila;
+}
+
+// Cerrar la conexión
+mysqli_close($conexion);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
