@@ -5,6 +5,16 @@ include_once 'conexion.php';
 if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
+// Verificar si se ha iniciado sesión
+$botonIniciarSesion = '';
+session_start();
+if (isset($_SESSION['usuario'])) {
+    // Usuario ha iniciado sesión, mostrar botón de cerrar sesión
+    $botonIniciarSesion = '<a href="cerrar_sesion.php" class="btn btn-danger">Cerrar Sesión</a>';
+} else {
+    // Usuario no ha iniciado sesión, mostrar botón de iniciar sesión
+    $botonIniciarSesion = '<a href="login.php" class="btn btn-primary">Iniciar Sesión</a>';
+}
 
 // Configurar la paginación
 $porPagina = 10; // Número de productos por página
