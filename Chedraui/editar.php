@@ -51,9 +51,9 @@ mysqli_close($conexion);
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
-<body>
-    <h1 class="text-center mt-5">Modificar Usuario</h1>
-    <form method="post" action="" class="mt-5 text-center">
+<body class="text-center">
+    <h1 class="mt-5">Modificar Usuario</h1>
+    <form method="post" action="" class="mt-5">
         <!-- Utiliza las clases de Bootstrap para centrar y dar estilo a la tabla -->
         <table class="table mx-auto w-50">
             <thead class="thead-dark">
@@ -67,4 +67,17 @@ mysqli_close($conexion);
             <tbody>
                 <tr>
                     <th scope="row">1</th>
-                    <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>" cla
+                    <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>" class="form-control"></td>
+                    <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>" class="form-control"></td>
+                    <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>" class="form-control"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Utiliza las clases de Bootstrap para centrar y dar estilo al botón -->
+        <input type="submit" value="Guardar cambios" class="btn btn-primary mt-3">
+    </form>
+
+    <!-- Incluye el script de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.co
