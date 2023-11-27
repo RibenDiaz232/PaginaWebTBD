@@ -48,18 +48,25 @@ mysqli_close($conexion);
 
 <body>
     <h1>Modificar Usuario</h1>
+    <table>
+        <tr>
+            <td><label for="nombre">Nombre:</label></td>
+            <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="telefono">Teléfono:</label></td>
+            <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="correo">Correo:</label></td>
+            <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>"></td>
+        </tr>
+    </table>
+
     <form method="post" action="">
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>"><br>
-
-        <label for="telefono">Teléfono:</label>
-        <input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>"><br>
-
-        <label for="correo">Correo:</label>
-        <input type="text" name="correo" value="<?php echo $usuario['correo']; ?>"><br>
-
         <input type="submit" value="Guardar cambios">
     </form>
 </body>
+
 </html>
 
