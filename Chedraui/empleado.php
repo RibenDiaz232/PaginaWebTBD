@@ -83,7 +83,7 @@ mysqli_close($conexion);
         <?php foreach ($producto as $producto): ?>
             <div class="col-md-4">
                 <div class="card">
-                    <img src="<?php echo $producto['imagen']; ?>" class="card-img-top" alt="<?php echo $producto['nombre']; ?>">
+                    <img src="<?php echo $producto['imagen_url']; ?>" class="card-img-top" alt="<?php echo $producto['nombre']; ?>">
                     <div class="card-body">
                         <h5 class="card-title"><?php echo $producto['nombre']; ?></h5>
                         <p class="card-text"><?php echo $producto['descripcion']; ?></p>
