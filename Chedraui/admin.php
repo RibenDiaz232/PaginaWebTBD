@@ -1,6 +1,6 @@
 <?php
-include_once 'conexion.php';
 
+include_once 'conexion.php';
 // Verificar si se estableció una conexión
 if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
@@ -41,10 +41,10 @@ if (!$resultado) {
     die("Error en la consulta: " . $conexion->error);
 }
 
-$productos = []; // Cambiado el nombre de la variable
+$producto = [];
 
 while ($fila = $resultado->fetch_assoc()) {
-    $productos[] = $fila; // Cambiado el nombre de la variable
+    $producto[] = $fila;
 }
 
 // Consulta para contar el total de productos
