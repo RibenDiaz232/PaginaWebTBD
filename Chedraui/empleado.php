@@ -55,16 +55,16 @@ $conexion->close();
                         <a class="nav-link" href="admin.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Catalago</a>
+                        <a class="nav-link" href="#">Catálogo</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Caja De Cobro</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">promociones</a>
+                        <a class="nav-link" href="#">Promociones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Servicos</a>
+                        <a class="nav-link" href="#">Servicios</a>
                     </li>
                 </ul>
             </div>
@@ -83,37 +83,32 @@ $conexion->close();
     <div class="container">
         <div class="row">
         <?php foreach ($producto as $producto): ?>
-    <div class="col-md-4">
-        <div class="card">
-            <img src="<?php echo $producto['imagen']; ?>" class="card-img-top" alt="<?php echo $producto['nombre']; ?>">
-            <div class="card-body">
-                <h5 class="card-title"><?php echo $producto['nombre']; ?></h5>
-                <p class="card-text"><?php echo $producto['descripcion']; ?></p>
-                <p class="card-text">$<?php echo $producto['precio']; ?></p>
-                
-                <!-- Modifica el formulario para agregar al carrito -->
-                <form method="GET" action="carrito.php">
-                    <input type="hidden" name="agregar" value="<?php echo $producto['idProducto']; ?>">
-                    <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
-                </form>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="<?php echo $producto['imagen']; ?>" class="card-img-top" alt="<?php echo $producto['nombre']; ?>">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $producto['nombre']; ?></h5>
+                        <p class="card-text"><?php echo $producto['descripcion']; ?></p>
+                        <p class="card-text">$<?php echo $producto['precio']; ?></p>
+                        
+                        <!-- Modifica el formulario para agregar al carrito -->
+                        <form method="GET" action="carrito.php">
+                            <input type="hidden" name="agregar" value="<?php echo $producto['idProducto']; ?>">
+                            <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
+                        </form>
+                    </div>
+                </div>
             </div>
+        <?php endforeach; ?>
         </div>
     </div>
-<?php endforeach; ?>
 
-            </div>
-        </div>
-    </div>
-  <script src="chedraui/js/index.js"></script>
-  <!-- Agrega el enlace a la biblioteca Font Awesome para el icono del carrito -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="chedraui/js/index.js"></script>
+    <!-- Agrega el enlace a la biblioteca Font Awesome para el icono del carrito -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-<!-- Agrega el enlace a los archivos de Bootstrap JS (jQuery y Popper.js son necesarios) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Agrega el enlace a los archivos de Bootstrap JS (jQuery y Popper.js son necesarios) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Agrega el enlace a los archivos de Bootstrap JS (jQuery y Popper.js son necesarios) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
-
 </body>
 </html>
