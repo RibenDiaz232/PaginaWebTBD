@@ -58,10 +58,10 @@ mysqli_close($conexion);
         <table class="table mx-auto w-50">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Teléfono</th>
-                    <th scope="col">Correo</th>
+                    <th scope="col">id</th>
+                    <th scope="col">Nombre del Usuario</th>
+                    <th scope="col">Número de teléfono</th>
+                    <th scope="col">Correo electrónico</th>
                 </tr>
             </thead>
             <tbody>
