@@ -1,25 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "Winsome1";
-$database = "chedraui";
-
-try {
-    // Intenta conectar a la base de datos
-    $conexion = new mysqli($servername, $username, $password, $database);
-
-    // Verificar la conexión
-    if ($conexion->connect_error) {
-        die("Error en la conexión a la base de datos: " . $conexion->connect_error);
-    }
-
-    // Resto del código...
-
-    // Cerrar la conexión
-    $conexion->close();
-} catch (mysqli_sql_exception $e) {
-    // Captura cualquier excepción de MySQLi
-    die("Error: " . $e->getMessage());
+include ("conexion.php");
+// Verificar si se estableció una conexión
+if (!$conexion) {
+    die("No se pudo conectar a la base de datos.");
 }
 ?>
 
