@@ -75,7 +75,7 @@ mysqli_close($conexion);
         </table>
 
         <!-- Utiliza las clases de Bootstrap para centrar y dar estilo al botón -->
-        <input type="submit" value="Guardar cambios" class="btn btn-primary mt-3">
+        <input type="submit" value="Guardar cambios" class="btn btn-success mt-3">
     </form>
 
     <!-- Incluye el script de Bootstrap -->
