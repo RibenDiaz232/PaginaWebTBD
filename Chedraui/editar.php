@@ -6,6 +6,8 @@ if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
 
+$usuario = array('nombre' => '', 'telefono' => '', 'correo' => ''); // Inicializa el array para evitar el error
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -48,25 +50,26 @@ mysqli_close($conexion);
 
 <body>
     <h1>Modificar Usuario</h1>
-    <table>
-        <tr>
-            <td><label for="nombre">Nombre:</label></td>
-            <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>"></td>
-        </tr>
-        <tr>
-            <td><label for="telefono">Teléfono:</label></td>
-            <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>"></td>
-        </tr>
-        <tr>
-            <td><label for="correo">Correo:</label></td>
-            <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>"></td>
-        </tr>
-    </table>
-
     <form method="post" action="">
+        <table>
+            <tr>
+                <td><label for="nombre">Nombre:</label></td>
+                <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>"></td>
+            </tr>
+            <tr>
+                <td><label for="telefono">Teléfono:</label></td>
+                <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>"></td>
+            </tr>
+            <tr>
+                <td><label for="correo">Correo:</label></td>
+                <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>"></td>
+            </tr>
+        </table>
+
         <input type="submit" value="Guardar cambios">
     </form>
 </body>
 
 </html>
+
 
