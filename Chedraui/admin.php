@@ -111,11 +111,11 @@ $conexion->close();
                     </li>
                 </ul>
             </div>
-                    <form method="GET" action="index.php" class="form-inline" role="search">
-                <input class="form-control mr-sm-2" type="search" placeholder="Buscar categoría" aria-label="Search"
-                    name="categoria">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-            </form>
+            <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+           
 
             <ul class="navbar-nav ml-auto">
                 <?php echo $botonIniciarSesion; ?>
