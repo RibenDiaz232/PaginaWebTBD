@@ -109,9 +109,10 @@ $conexion->close();
             </ul>
         </div>
         <form method="GET" action="index.php" class="form-inline">
-            <input class="form-control mx-auto mr-sm-2" type="search" placeholder="Buscar categoría" aria-label="Search" name="categoria">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-        </form>
+    <input class="form-control mr-sm-2 mx-auto" type="search" placeholder="Buscar categoría" aria-label="Search" name="categoria">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+</form>
+
         <ul class="navbar-nav ml-auto">
             <?php echo $botonIniciarSesion; ?>
             <li class="nav-item">
