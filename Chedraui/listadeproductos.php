@@ -21,7 +21,7 @@ $productos = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
             <?php foreach ($productos as $producto): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo $producto['nombre']; ?>" class="card-img-top" style="height: 300px; object-fit: cover;">
+                        <img src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo $producto['nombre']; ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $producto['nombre']; ?></h5>
                             <p class="card-text">Cantidad: <?php echo $producto['cantidad']; ?></p>
