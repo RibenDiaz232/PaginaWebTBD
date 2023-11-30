@@ -6,18 +6,27 @@ if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
 
-$usuario = array('nombre' => '', 'telefono' => '', 'correo' => ''); // Inicializa el array para evitar el error
+$usuario = array('nombre' => '', 'telefono' => '', 'correo' => '');
 
+// Verificar si se ha enviado un ID válido
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
+    // Comprobar si se ha enviado un formulario
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nombre = $_POST['nombre'];
         $telefono = $_POST['telefono'];
         $correo = $_POST['correo'];
-        
-        $consulta = "UPDATE persona SET nombre = '$nombre', telefono = '$telefono', correo = '$correo' WHERE idpersona = $id";
-        $resultado = mysqli_query($conexion, $consulta);
+
+        // Prevenir inyección SQL utilizando sentencias preparadas
+        $consulta = "UPDATE persona SET nombre = ?, telefono = ?, correo = ? WHERE idpersona = ?";
+        $stmt = mysqli_prepare($conexion, $consulta);
+
+        // Vincular parámetros
+        mysqli_stmt_bind_param($stmt, "sssi", $nombre, $telefono, $correo, $id);
+
+        // Ejecutar la consulta preparada
+        $resultado = mysqli_stmt_execute($stmt);
 
         if ($resultado) {
             // Redireccionar al usuario a la tabla de personas
@@ -26,20 +35,39 @@ if (isset($_GET['id'])) {
         } else {
             echo "Error al modificar el usuario: " . mysqli_error($conexion);
         }
+
+        // Cerrar la consulta preparada
+        mysqli_stmt_close($stmt);
     }
 
-    $consulta = "SELECT * FROM persona WHERE idpersona = $id";
-    $resultado = mysqli_query($conexion, $consulta);
+    // Consultar la información del usuario
+    $consulta = "SELECT * FROM persona WHERE idpersona = ?";
+    $stmt = mysqli_prepare($conexion, $consulta);
 
-    if ($resultado && mysqli_num_rows($resultado) > 0) {
-        $usuario = mysqli_fetch_assoc($resultado);
+    // Vincular parámetros
+    mysqli_stmt_bind_param($stmt, "i", $id);
+
+    // Ejecutar la consulta preparada
+    $resultado = mysqli_stmt_execute($stmt);
+
+    if ($resultado) {
+        // Vincular resultados
+        mysqli_stmt_bind_result($stmt, $usuario['idpersona'], $usuario['nombre'], $usuario['telefono'], $usuario['correo']);
+
+        // Obtener resultados
+        mysqli_stmt_fetch($stmt);
     } else {
         echo "Usuario no encontrado.";
     }
+
+    // Cerrar la consulta preparada
+    mysqli_stmt_close($stmt);
 }
 
+// Cerrar la conexión
 mysqli_close($conexion);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
