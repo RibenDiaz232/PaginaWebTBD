@@ -104,7 +104,7 @@ $conexion->close();
                         <a class="nav-link" href="#">Ventas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Usuarios</a>
+                        <a class="nav-link" href="usuarios.php">Usuarios</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="listadeproductos.php">Agregar los productos</a>

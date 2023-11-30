@@ -97,7 +97,7 @@ $usuarios = obtenerUsuarios($conexion);
                         <?php echo ($usuario['idPuesto'] == 1) ? 'Administrador' : 'Cliente'; ?>
                     </td>
                     <td>
-                        <a href="editarusuarios.php?id=<?php echo $usuario['idusuario']; ?>" class="btn btn-primary">Editar</a>
+                        <a href="editar.php?id=<?php echo $usuario['idusuario']; ?>" class="btn btn-primary">Editar</a>
                         <form method="post" onsubmit="return confirm('¿Estás seguro de que quieres eliminar a este usuario?');">
                             <input type="hidden" name="id_eliminar" value="<?php echo $usuario['idusuario']; ?>">
                             <button type="submit" name="eliminar" class="btn btn-danger">Eliminar</button>
