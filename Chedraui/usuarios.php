@@ -70,6 +70,7 @@ $usuarios = obtenerUsuarios($conexion);
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
+                    <th>telefono</th>
                     <th>Email</th>
                     <th>Contraseña</th>
                     <th>Puesto</th>
@@ -81,6 +82,7 @@ $usuarios = obtenerUsuarios($conexion);
                 <tr class="<?php echo ($key % 2 == 0) ? 'mi-fila-par' : 'mi-fila-impar'; ?>">
                     <td><?php echo $usuario['idusuario']; ?></td>
                     <td><?php echo $usuario['nombre']; ?></td>
+                    <td><?php echo $usuario['telefono']; ?></td>
                     <td><?php echo $usuario['correo']; ?></td>
                     
                     <td>
@@ -120,6 +122,30 @@ $usuarios = obtenerUsuarios($conexion);
                 passwordField.type = "password";
             }
         }
+        function mostrarPassword(id) {
+        // Oculta el campo de contraseña original
+        document.getElementById("password-" + id).style.display = "none";
+        // Muestra la capa de enmascaramiento
+        document.getElementById("enmascaramiento-" + id).style.display = "block";
+        // Aplica el desenfoque al fondo
+        document.body.classList.add("enmascaramiento-activo");
+    }
+
+    function verificarContraseña(id) {
+        var inputContraseña = document.getElementById("password-input-" + id).value;
+
+        // Lógica para verificar la contraseña (puedes personalizar esta parte)
+        if (inputContraseña === "tucontraseña") {
+            // Muestra el campo de contraseña original
+            document.getElementById("password-" + id).style.display = "block";
+            // Oculta la capa de enmascaramiento
+            document.getElementById("enmascaramiento-" + id).style.display = "none";
+            // Quita el desenfoque al fondo
+            document.body.classList.remove("enmascaramiento-activo");
+        } else {
+            alert("Contraseña incorrecta. Intenta de nuevo.");
+        }
+    }
     </script>
 </body>
 </html>

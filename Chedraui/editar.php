@@ -41,7 +41,7 @@ if (isset($_GET['id'])) {
 
         if ($resultado) {
             // Redireccionar al usuario a la tabla de personas
-            header('Location: agregar.php');
+            header('Location: usuarios.php');
             exit; // Asegura que la redirección se efectúe
         } else {
             echo "Error al modificar el usuario: " . mysqli_error($conexion);
