@@ -1,10 +1,21 @@
-Copy code
 <?php
 require_once('conexion.php');
 
 // Verificar si se estableció una conexión
 if (!$conexion) {
     die("No se pudo conectar a la base de datos: " . mysqli_connect_error());
+}
+
+// Verificar si la tabla 'persona' existe
+$checkTableQuery = "SHOW TABLES LIKE 'persona'";
+$checkTableResult = mysqli_query($conexion, $checkTableQuery);
+
+if (!$checkTableResult) {
+    die("Error al verificar la existencia de la tabla 'persona': " . mysqli_error($conexion));
+}
+
+if (mysqli_num_rows($checkTableResult) == 0) {
+    die("La tabla 'persona' no existe en la base de datos.");
 }
 
 $usuario = array('nombre' => '', 'telefono' => '', 'correo' => ''); // Inicializa el array para evitar el error
