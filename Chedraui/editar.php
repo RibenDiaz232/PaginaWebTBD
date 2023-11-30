@@ -28,7 +28,7 @@ if (isset($_GET['id'])) {
         $telefono = $_POST['telefono'];
         $correo = $_POST['correo'];
         
-        $consulta = "UPDATE persona SET nombre = ?, telefono = ?, correo = ? WHERE idpersona = ?";
+        $consulta = "UPDATE usuario SET nombre = ?, telefono = ?, correo = ? WHERE idusuario = ?";
         $stmt = mysqli_prepare($conexion, $consulta);
 
         // Verificar si hay algún error en la preparación de la consulta
