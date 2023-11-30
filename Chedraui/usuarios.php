@@ -47,25 +47,11 @@ $usuarios = obtenerUsuarios($conexion);
     <title>Usuarios Registrados</title>
     <link rel="stylesheet" href="css/usuarios.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <style>
-        /* Define tus propios estilos CSS aquí */
-        .mi-tabla {
-            background-color: #FF0404; /* Cambia el color de fondo de la tabla */
-        }
-
-        .mi-fila-par {
-            background-color: #dcdcdc; /* Cambia el color de fondo de las filas pares */
-        }
-
-        .mi-fila-impar {
-            background-color: #dcdcdc; /* Cambia el color de fondo de las filas impares */
-        }
-    </style>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Usuarios Registrados</h1>
-        <table class="table table-striped mi-tabla">
+        <table class="table table-dark">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -78,7 +64,7 @@ $usuarios = obtenerUsuarios($conexion);
             </thead>
             <tbody>
                 <?php foreach ($usuarios as $key => $usuario): ?>
-                <tr class="<?php echo ($key % 2 == 0) ? 'mi-fila-par' : 'mi-fila-impar'; ?>">
+                <tr class="<?php echo ($key % 2 == 0) ? 'table-active' : ''; ?>">
                     <td><?php echo $usuario['idusuario']; ?></td>
                     <td><?php echo $usuario['nombre']; ?></td>
                     <td><?php echo $usuario['correo']; ?></td>
