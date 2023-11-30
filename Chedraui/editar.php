@@ -11,7 +11,7 @@ $checkTableQuery = "SHOW TABLES LIKE 'usuario'";
 $checkTableResult = mysqli_query($conexion, $checkTableQuery);
 
 if (!$checkTableResult) {
-    die("Error al verificar la existencia de la tabla 'persona': " . mysqli_error($conexion));
+    die("Error al verificar la existencia de la tabla 'usuario': " . mysqli_error($conexion));
 }
 
 if (mysqli_num_rows($checkTableResult) == 0) {
