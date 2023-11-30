@@ -1,31 +1,31 @@
+Copy code
 <?php
 require_once('conexion.php');
 
 // Verificar si se estableció una conexión
 if (!$conexion) {
-    die("No se pudo conectar a la base de datos.");
+    die("No se pudo conectar a la base de datos: " . mysqli_connect_error());
 }
 
-$usuario = array('nombre' => '', 'telefono' => '', 'correo' => '');
+$usuario = array('nombre' => '', 'telefono' => '', 'correo' => ''); // Inicializa el array para evitar el error
 
-// Verificar si se ha enviado un ID válido
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Comprobar si se ha enviado un formulario
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nombre = $_POST['nombre'];
         $telefono = $_POST['telefono'];
         $correo = $_POST['correo'];
-
-        // Prevenir inyección SQL utilizando sentencias preparadas
+        
         $consulta = "UPDATE persona SET nombre = ?, telefono = ?, correo = ? WHERE idpersona = ?";
         $stmt = mysqli_prepare($conexion, $consulta);
 
-        // Vincular parámetros
-        mysqli_stmt_bind_param($stmt, "sssi", $nombre, $telefono, $correo, $id);
+        // Verificar si hay algún error en la preparación de la consulta
+        if (!$stmt) {
+            die("Error en la preparación de la consulta: " . mysqli_error($conexion));
+        }
 
-        // Ejecutar la consulta preparada
+        mysqli_stmt_bind_param($stmt, "sssi", $nombre, $telefono, $correo, $id);
         $resultado = mysqli_stmt_execute($stmt);
 
         if ($resultado) {
@@ -36,38 +36,36 @@ if (isset($_GET['id'])) {
             echo "Error al modificar el usuario: " . mysqli_error($conexion);
         }
 
-        // Cerrar la consulta preparada
+        // Cerrar la declaración preparada
         mysqli_stmt_close($stmt);
     }
 
-    // Consultar la información del usuario
     $consulta = "SELECT * FROM persona WHERE idpersona = ?";
     $stmt = mysqli_prepare($conexion, $consulta);
 
-    // Vincular parámetros
+    // Verificar si hay algún error en la preparación de la consulta
+    if (!$stmt) {
+        die("Error en la preparación de la consulta: " . mysqli_error($conexion));
+    }
+
     mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    
+    $resultado = mysqli_stmt_get_result($stmt);
 
-    // Ejecutar la consulta preparada
-    $resultado = mysqli_stmt_execute($stmt);
-
-    if ($resultado) {
-        // Vincular resultados
-        mysqli_stmt_bind_result($stmt, $usuario['idpersona'], $usuario['nombre'], $usuario['telefono'], $usuario['correo']);
-
-        // Obtener resultados
-        mysqli_stmt_fetch($stmt);
+    if ($resultado && mysqli_num_rows($resultado) > 0) {
+        $usuario = mysqli_fetch_assoc($resultado);
     } else {
         echo "Usuario no encontrado.";
     }
 
-    // Cerrar la consulta preparada
+    // Cerrar la declaración preparada
     mysqli_stmt_close($stmt);
 }
 
 // Cerrar la conexión
 mysqli_close($conexion);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
