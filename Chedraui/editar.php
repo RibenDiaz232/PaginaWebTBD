@@ -15,7 +15,7 @@ if (!$checkTableResult) {
 }
 
 if (mysqli_num_rows($checkTableResult) == 0) {
-    die("La tabla 'persona' no existe en la base de datos.");
+    die("La tabla 'usuario' no existe en la base de datos.");
 }
 
 $usuario = array('nombre' => '', 'telefono' => '', 'correo' => ''); // Inicializa el array para evitar el error
