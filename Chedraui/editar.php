@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
         mysqli_stmt_close($stmt);
     }
 
-    $consulta = "SELECT * FROM persona WHERE idpersona = ?";
+    $consulta = "SELECT * FROM usuario WHERE idusuario = ?";
     $stmt = mysqli_prepare($conexion, $consulta);
 
     // Verificar si hay algún error en la preparación de la consulta
