@@ -6,8 +6,8 @@ if (!$conexion) {
     die("No se pudo conectar a la base de datos: " . mysqli_connect_error());
 }
 
-// Verificar si la tabla 'persona' existe
-$checkTableQuery = "SHOW TABLES LIKE 'persona'";
+// Verificar si la tabla 'usuario' existe
+$checkTableQuery = "SHOW TABLES LIKE 'usuario'";
 $checkTableResult = mysqli_query($conexion, $checkTableQuery);
 
 if (!$checkTableResult) {
