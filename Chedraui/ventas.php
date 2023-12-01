@@ -142,7 +142,7 @@ mysqli_close($conexion); // Cierra la conexión
         <tbody>
         <?php while ($venta = mysqli_fetch_assoc($resultado)): ?>
             <tr>                
-                <td><?php echo $IDUsuario['idusuario']; ?></td>
+                <td><?php echo $idUsuario['idusuario']; ?></td>
                 <td><?php echo $fechaCompra['fecha']; ?></td>
                 <td><?php echo $producto['producto']; ?></td>
                 <td><?php echo $cantidad['cantidad']; ?></td>
