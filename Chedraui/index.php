@@ -107,9 +107,7 @@ $conexion->close();
                 <li class="nav-item">
                     <a class="nav-link" href="#">Promociones</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="ventas.php">Ventas </a>
-                </li>
+
             </ul>
         </div>
         <form method="GET" action="index.php" class="form-inline">

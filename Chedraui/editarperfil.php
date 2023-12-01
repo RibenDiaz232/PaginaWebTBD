@@ -3,13 +3,6 @@ include "conexion.php"; // Asegúrate de incluir el archivo de conexión
 
 session_start();
 
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['usuario'])) {
-    // Redirigir al usuario a la página de inicio de sesión si no ha iniciado sesión
-    header("Location: login.php");
-    exit();
-}
-
 $usuario_id = $_SESSION['usuario']['idusuario'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
