@@ -130,7 +130,7 @@ mysqli_close($conexion); // Cierra la conexión
     <table class="table table-bordered mt-4">
         <thead class="table-primary">
         <tr>
-            <th scope="col">#</th>
+            
             <th scope="col">ID Usuario</th>
             <th scope="col">Fecha</th>
             <th scope="col">Producto</th>
@@ -141,14 +141,13 @@ mysqli_close($conexion); // Cierra la conexión
         </thead>
         <tbody>
         <?php while ($venta = mysqli_fetch_assoc($resultado)): ?>
-            <tr>
-                <th scope="row"><?php echo $venta['id']; ?></th>
-                <td><?php echo $venta['id_usuario']; ?></td>
-                <td><?php echo $venta['fecha']; ?></td>
-                <td><?php echo $venta['producto']; ?></td>
-                <td><?php echo $venta['cantidad']; ?></td>
-                <td>$<?php echo $venta['precio']; ?></td>
-                <td>$<?php echo $venta['total']; ?></td>
+            <tr>                
+                <td><?php echo $IDUsuario['idusuario']; ?></td>
+                <td><?php echo $fechaCompra['fecha']; ?></td>
+                <td><?php echo $producto['producto']; ?></td>
+                <td><?php echo $cantidad['cantidad']; ?></td>
+                <td>$<?php echo $precioUnitario['precio']; ?></td>
+                <td>$<?php echo $total['total']; ?></td>
             </tr>
         <?php endwhile; ?>
         </tbody>
