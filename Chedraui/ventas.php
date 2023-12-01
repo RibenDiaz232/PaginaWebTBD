@@ -129,14 +129,14 @@ mysqli_close($conexion); // Cierra la conexión
         </div>
     </div>
 
-    <table class="table table-bordered mt-4">
-        <thead class="table-primary">
+    <!-- Tabla con diseño Primary -->
+    <table class="table table-bordered table-primary mt-4">
+        <thead>
         <tr>
             <th scope="col">ID Usuario</th>
             <th scope="col">Fecha</th>
             <th scope="col">Producto</th>
             <th scope="col">Cantidad</th>
-            
             <th scope="col">Total</th>
             <th scope="col">Eliminar compra / PDF</th>
         </tr>
