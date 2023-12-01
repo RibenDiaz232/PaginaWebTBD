@@ -136,8 +136,9 @@ mysqli_close($conexion); // Cierra la conexión
             <th scope="col">Fecha</th>
             <th scope="col">Producto</th>
             <th scope="col">Cantidad</th>
-            <th scope="col">Eliminar compra / PDF</th>
+            
             <th scope="col">Total</th>
+            <th scope="col">Eliminar compra / PDF</th>
         </tr>
         </thead>
         <tbody>
@@ -154,8 +155,7 @@ mysqli_close($conexion); // Cierra la conexión
                     
                     <!-- Botón para generar PDF -->
                     <a href="generar_pdf.php?idventa=<?php echo $venta['idventa']; ?>" class="btn btn-secondary btn-sm">PDF</a>
-                </td>
-                
+                </td>                
             </tr>
         <?php endwhile; ?>
         </tbody>
