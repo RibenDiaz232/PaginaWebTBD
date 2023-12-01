@@ -8,6 +8,19 @@ if (!$conexion) {
 
 $compraExitosa = isset($_GET['compra_exitosa']) && $_GET['compra_exitosa'] == '1';
 
+// Eliminar compra si se proporciona un ID
+if (isset($_GET['eliminar_id'])) {
+    $idEliminar = $_GET['eliminar_id'];
+    $queryEliminar = "DELETE FROM ventas WHERE idventa = '$idEliminar'";
+    $resultadoEliminar = mysqli_query($conexion, $queryEliminar);
+    if ($resultadoEliminar) {
+        header("Location: registro_ventas.php");
+        exit();
+    } else {
+        echo "Error al eliminar la compra: " . mysqli_error($conexion);
+    }
+}
+
 // Si se envía un formulario de compra
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener los datos del formulario
@@ -123,7 +136,7 @@ mysqli_close($conexion); // Cierra la conexión
             <th scope="col">Fecha</th>
             <th scope="col">Producto</th>
             <th scope="col">Cantidad</th>
-            <th scope="col">Precio Unitario</th>
+            <th scope="col">Eliminar compra / PDF</th>
             <th scope="col">Total</th>
         </tr>
         </thead>
@@ -134,7 +147,13 @@ mysqli_close($conexion); // Cierra la conexión
                 <td><?php echo $venta['fecha']; ?></td>
                 <td><?php echo $venta['producto']; ?></td>
                 <td><?php echo $venta['cantidad']; ?></td>
-                <td>Eliminar esta columna</td>
+                <td>
+                    <!-- Botón para eliminar compra -->
+                    <a href="registro_ventas.php?eliminar_id=<?php echo $venta['idventa']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                    
+                    <!-- Botón para generar PDF -->
+                    <a href="generar_pdf.php?idventa=<?php echo $venta['idventa']; ?>" class="btn btn-secondary btn-sm">PDF</a>
+                </td>
                 <td>$<?php echo $venta['total']; ?></td>
             </tr>
         <?php endwhile; ?>
@@ -143,6 +162,4 @@ mysqli_close($conexion); // Cierra la conexión
 </main>
 
 <!-- Scripts de Bootstrap 5 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js
