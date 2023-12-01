@@ -11,7 +11,7 @@ $compraExitosa = isset($_GET['compra_exitosa']) && $_GET['compra_exitosa'] == '1
 // Si se envía un formulario de compra
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener los datos del formulario
-    $idUsuario = $_POST['id_usuario'];
+    $idUsuario = $_POST['idusuario'];
     $fechaCompra = date("Y-m-d H:i:s"); // Fecha actual
     $producto = $_POST['producto'];
     $cantidad = $_POST['cantidad'];
