@@ -71,3 +71,21 @@ a {
 a:hover {
     text-decoration: underline;
 }
+/* Nuevos estilos para la capa de enmascaramiento */
+.enmascaramiento {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+    z-index: 2;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.enmascaramiento-activo {
+    filter: blur(5px);
+    pointer-events: none;
+}

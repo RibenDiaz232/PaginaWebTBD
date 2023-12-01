@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: chedraui
 -- ------------------------------------------------------
--- Server version	8.1.0
+-- Server version	8.2.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -24,10 +24,12 @@ DROP TABLE IF EXISTS `carrito`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `carrito` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `producto_id` int NOT NULL,
+  `idproducto` int DEFAULT NULL,
   `cantidad` int NOT NULL,
   `usuario_id` int NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idproducto_UNIQUE` (`idproducto`),
+  CONSTRAINT `fk_carrito_idproducto` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -100,12 +102,13 @@ DROP TABLE IF EXISTS `detalleventas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `detalleventas` (
   `idDetalleVentas` int NOT NULL AUTO_INCREMENT,
-  `idventas` varchar(45) DEFAULT NULL,
-  `idproducto` varchar(45) DEFAULT NULL,
+  `idventas` int DEFAULT NULL,
+  `idproducto` int DEFAULT NULL,
   `cantidad` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idDetalleVentas`),
   UNIQUE KEY `idventas_UNIQUE` (`idventas`),
-  UNIQUE KEY `idproducto_UNIQUE` (`idproducto`)
+  UNIQUE KEY `idproducto_INDEX` (`idproducto`) /*!80000 INVISIBLE */,
+  CONSTRAINT `idproducto` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -208,7 +211,7 @@ DROP TABLE IF EXISTS `producto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `producto` (
-  `idProducto` int NOT NULL AUTO_INCREMENT,
+  `idproducto` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) NOT NULL,
   `precio` decimal(10,2) NOT NULL,
   `descripcion` text,
@@ -216,7 +219,8 @@ CREATE TABLE `producto` (
   `cantidad` int NOT NULL,
   `fechaagregado` date NOT NULL,
   `categoria` varchar(45) NOT NULL,
-  PRIMARY KEY (`idProducto`)
+  PRIMARY KEY (`idproducto`),
+  UNIQUE KEY `idproducto` (`idproducto`)
 ) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -289,8 +293,11 @@ DROP TABLE IF EXISTS `sucursal`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sucursal` (
   `idSucursal` int NOT NULL AUTO_INCREMENT,
+  `idproductos` int NOT NULL,
   `idlocalidad` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idSucursal`)
+  PRIMARY KEY (`idSucursal`),
+  UNIQUE KEY `idproductos_UNIQUE` (`idproductos`),
+  CONSTRAINT `idproductos_sucursal` FOREIGN KEY (`idproductos`) REFERENCES `producto` (`idproducto`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -320,7 +327,7 @@ CREATE TABLE `usuario` (
   PRIMARY KEY (`idusuario`),
   KEY `idPuesto` (`idPuesto`),
   CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`idPuesto`) REFERENCES `puesto` (`idPuesto`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +336,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Erick Santiago Gonzalez Marin','2321595692','winsomeparrot57@gmail.com','ErickSantiago18',1),(2,'Santy','1234567890','santy@gmail.com','santy123',3),(3,'Ruben Diaz','2321552505','rubendiaz@gmail.com','Ribendiaz232',2);
+INSERT INTO `usuario` VALUES (1,'Erick Santiago Gonzalez Marin','2321595692','winsomeparrot57@gmail.com','ErickSantiago18',1),(2,'Santy','1234567890','santy@gmail.com','santy123',3),(3,'Ruben Diaz','2321552505','rubendiaz@gmail.com','Ribendiaz232',2),(20,'Ruben','2321241298','Ruben@gmail.com','Ribendiaz232',1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -347,7 +354,8 @@ CREATE TABLE `ventas` (
   `cantidad` int DEFAULT NULL,
   `precio` decimal(10,2) DEFAULT NULL,
   `total` decimal(10,2) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  CONSTRAINT `iddetalleventas` FOREIGN KEY (`id`) REFERENCES `detalleventas` (`idventas`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -369,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-19 12:12:27
+-- Dump completed on 2023-11-27  8:05:49

@@ -1,6 +1,11 @@
 <?php
 include "conexion.php";
 
+// Verificar si se estableció una conexión
+if (!$conexion) {
+    die("No se pudo conectar a la base de datos.");
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificar si se han enviado los datos de inicio de sesión
     if (isset($_POST["email"]) && isset($_POST["password"])) {
@@ -17,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Redirigir según el tipo de usuario
             if ($esAdministrador) {
+                
                 header("Location: admin.php");
                 exit();
             } else {
@@ -60,5 +66,6 @@ if (isset($_SESSION['usuario'])) {
                         </li>";
     $menuUsuario = '';  // No se muestra el menú de usuario
 }
+
 
 ?>

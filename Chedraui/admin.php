@@ -5,6 +5,16 @@ include_once 'conexion.php';
 if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
+// Verificar si se ha iniciado sesión
+$botonIniciarSesion = '';
+session_start();
+if (isset($_SESSION['usuario'])) {
+    // Usuario ha iniciado sesión, mostrar botón de cerrar sesión
+    $botonIniciarSesion = '<a href="cerrar_sesion.php" class="btn btn-danger">Cerrar Sesión</a>';
+} else {
+    // Usuario no ha iniciado sesión, mostrar botón de iniciar sesión
+    $botonIniciarSesion = '<a href="login.php" class="btn btn-primary">Iniciar Sesión</a>';
+}
 
 // Configurar la paginación
 $porPagina = 10; // Número de productos por página
@@ -65,6 +75,7 @@ $conexion->close();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Productos Nuevos</title>
@@ -72,38 +83,43 @@ $conexion->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <!-- Mueve el logotipo a la derecha utilizando ml-auto -->
-            <img src="../chedraui/img/oxxo-gaming.png" alt="logo" width="150px" class="ml-auto">
-            <!-- Botón de hamburguesa para dispositivos móviles -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#">Tu Tienda</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="admin.php">Inicio</a>
+                        <a class="nav-link" href="index.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Catagoria</a>
+                        <a class="nav-link" href="#">Categoría</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="ventas.php">Ventas</a>
+                        <a class="nav-link" href="#">Ventas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="usuarios.php">Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="listadeproductos.php">Agregar los Productos</a>
+                        <a class="nav-link" href="listadeproductos.php">Agregar los productos</a>
                     </li>
                 </ul>
             </div>
+            
+            <form method="GET" action="index.php" class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar categoría" aria-label="Search"
+                    name="categoria">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="login.php">Iniciar Sesión</a>
-                </li>
+                <?php echo $botonIniciarSesion; ?>
                 <li class="nav-item">
                     <a class="nav-link" href="carrito.php">
                         <i class="fas fa-shopping-cart"></i> Carrito
@@ -112,15 +128,17 @@ $conexion->close();
             </ul>
         </div>
     </nav>
-
     <div class="container mt-5">
         <!-- Agrega un formulario de selección de categoría -->
         <form method="GET" action="admin.php" class="mb-3">
             <label for="categoria">Categoría:</label>
             <select name="categoria" id="categoria" class="form-control">
-                <option value="" <?php echo ($categoriaSeleccionada == '') ? 'selected' : ''; ?>>Todas las categorías</option>
+                <option value="" <?php echo ($categoriaSeleccionada == '') ? 'selected' : ''; ?>>Todas las categorías
+                </option>
                 <?php foreach ($categorias as $categoria): ?>
-                    <option value="<?php echo $categoria; ?>" <?php echo ($categoriaSeleccionada == $categoria) ? 'selected' : ''; ?>><?php echo $categoria; ?></option>
+                    <option value="<?php echo $categoria; ?>" <?php echo ($categoriaSeleccionada == $categoria) ? 'selected' : ''; ?>>
+                        <?php echo $categoria; ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
             <button type="submit" class="btn btn-primary mt-2">Filtrar</button>
@@ -130,11 +148,18 @@ $conexion->close();
             <?php foreach ($producto as $producto): ?>
                 <div class="col">
                     <div class="card h-100">
-                        <img src="<?php echo $producto['imagen_url']; ?>" class="card-img-top" alt="<?php echo $producto['nombre']; ?>">
+                        <img src="<?php echo $producto['imagen_url']; ?>" class="card-img-top"
+                            alt="<?php echo $producto['nombre']; ?>">
                         <div class="card-body">
-                            <h5 class="card-title"><?php echo $producto['nombre']; ?></h5>
-                            <p class="card-text"><?php echo $producto['descripcion']; ?></p>
-                            <p class="card-text">$<?php echo $producto['precio']; ?></p>
+                            <h5 class="card-title">
+                                <?php echo $producto['nombre']; ?>
+                            </h5>
+                            <p class="card-text">
+                                <?php echo $producto['descripcion']; ?>
+                            </p>
+                            <p class="card-text">$
+                                <?php echo $producto['precio']; ?>
+                            </p>
                             <!-- Modifica el formulario para agregar al carrito -->
                             <form method="GET" action="carrito.php">
                                 <input type="hidden" name="agregar" value="<?php echo $producto['idProducto']; ?>">
@@ -151,7 +176,10 @@ $conexion->close();
             <ul class="pagination justify-content-center">
                 <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
                     <li class="page-item <?php echo ($i == $pagina) ? 'active' : ''; ?>">
-                        <a class="page-link" href="?pagina=<?php echo $i; ?><?php echo ($categoriaSeleccionada) ? '&categoria=' . $categoriaSeleccionada : ''; ?>"><?php echo $i; ?></a>
+                        <a class="page-link"
+                            href="?pagina=<?php echo $i; ?><?php echo ($categoriaSeleccionada) ? '&categoria=' . $categoriaSeleccionada : ''; ?>">
+                            <?php echo $i; ?>
+                        </a>
                     </li>
                 <?php endfor; ?>
             </ul>
@@ -164,4 +192,5 @@ $conexion->close();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>
