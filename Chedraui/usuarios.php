@@ -2,13 +2,12 @@
 // Incluye la conexión a la base de datos y verifica la sesión del usuario
 include "conexion.php";
 
-
 // Función para obtener la lista de usuarios desde la base de datos
 function obtenerUsuarios($conexion) {
     $query = "SELECT * FROM usuario";
     $resultado = mysqli_query($conexion, $query);
-    $usuario = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    return $usuario;
+    $usuarios = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    return $usuarios;
 }
 
 // Función para eliminar un usuario por ID
@@ -27,6 +26,25 @@ function actualizarPuesto($conexion, $id, $nuevoPuesto) {
     mysqli_stmt_execute($stmt);
 }
 
+// Función para generar y guardar un código de restablecimiento de contraseña
+function generarYGuardarCodigoRestablecimiento($conexion, $idUsuario) {
+    $codigoRestablecimiento = generarCodigoUnico();
+    $codigoExpiracion = date('Y-m-d H:i:s', strtotime('+1 hour')); // Establecer una expiración de 1 hora
+
+    $query = "UPDATE usuario SET codigoRestablecimiento = ?, codigoExpiracion = ? WHERE idusuario = ?";
+    $stmt = mysqli_prepare($conexion, $query);
+    mysqli_stmt_bind_param($stmt, "ssi", $codigoRestablecimiento, $codigoExpiracion, $idUsuario);
+    mysqli_stmt_execute($stmt);
+
+    // Puedes enviar el código al usuario por correo electrónico aquí
+    echo "Se ha generado un código de restablecimiento para el usuario con ID $idUsuario: $codigoRestablecimiento";
+}
+
+// Función para generar un código único
+function generarCodigoUnico($longitud = 8) {
+    return bin2hex(random_bytes($longitud));
+}
+
 if (isset($_POST['eliminar'])) {
     $idEliminar = $_POST['id_eliminar'];
     eliminarUsuario($conexion, $idEliminar);
@@ -38,8 +56,14 @@ if (isset($_POST['actualizar_puesto'])) {
     actualizarPuesto($conexion, $idActualizar, $nuevoPuesto);
 }
 
+if (isset($_POST['restablecer'])) {
+    $idRestablecer = $_POST['id_restablecer'];
+    generarYGuardarCodigoRestablecimiento($conexion, $idRestablecer);
+}
+
 $usuarios = obtenerUsuarios($conexion);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -72,14 +96,8 @@ $usuarios = obtenerUsuarios($conexion);
                     <td><?php echo $usuario['correo']; ?></td>
                     
                     <td>
-                        <div class="input-group">
-                            <input type="password" class="form-control" value="<?php echo $usuario['contraseña']; ?>" id="password-<?php echo $usuario['idusuario']; ?>" readonly>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" onclick="mostrarPassword(<?php echo $usuario['idusuario']; ?>)">
-                                    Mostrar
-                                </button>
-                            </div>
-                        </div>
+                        <!-- Mostrar un mensaje en lugar del campo de contraseña -->
+                        <span class="text-muted">Contraseña oculta</span>
                     </td>
                     <td>
                         <?php echo ($usuario['idPuesto'] == 1) ? 'Administrador' : 'Cliente'; ?>
@@ -90,6 +108,11 @@ $usuarios = obtenerUsuarios($conexion);
                             <input type="hidden" name="id_eliminar" value="<?php echo $usuario['idusuario']; ?>">
                             <button type="submit" name="eliminar" class="btn btn-danger">Eliminar</button>
                         </form>
+                        <!-- Agregar botón para restablecer contraseña -->
+                        <form method="post">
+                            <input type="hidden" name="id_restablecer" value="<?php echo $usuario['idusuario']; ?>">
+                            <button type="submit" name="restablecer" class="btn btn-warning">Restablecer Contraseña</button>
+                        </form>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -99,39 +122,7 @@ $usuarios = obtenerUsuarios($conexion);
     </div>
 
     <script>
-        function mostrarPassword(id) {
-            var passwordField = document.getElementById("password-" + id);
-
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-            } else {
-                passwordField.type = "password";
-            }
-        }
-        function mostrarPassword(id) {
-        // Oculta el campo de contraseña original
-        document.getElementById("password-" + id).style.display = "none";
-        // Muestra la capa de enmascaramiento
-        document.getElementById("enmascaramiento-" + id).style.display = "block";
-        // Aplica el desenfoque al fondo
-        document.body.classList.add("enmascaramiento-activo");
-    }
-
-    function verificarContraseña(id) {
-        var inputContraseña = document.getElementById("password-input-" + id).value;
-
-        // Lógica para verificar la contraseña (puedes personalizar esta parte)
-        if (inputContraseña === "tucontraseña") {
-            // Muestra el campo de contraseña original
-            document.getElementById("password-" + id).style.display = "block";
-            // Oculta la capa de enmascaramiento
-            document.getElementById("enmascaramiento-" + id).style.display = "none";
-            // Quita el desenfoque al fondo
-            document.body.classList.remove("enmascaramiento-activo");
-        } else {
-            alert("Contraseña incorrecta. Intenta de nuevo.");
-        }
-    }
+        // No necesitas la función mostrarPassword para este caso
     </script>
 </body>
 </html>
