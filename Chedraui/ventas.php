@@ -79,10 +79,14 @@ mysqli_close($conexion); // Cierra la conexión
         </div>
     <?php endif; ?>
 
-    <!-- Botón para abrir la ventana modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventanaVenta">
-        Añadir venta
-    </button>
+    <div class="d-flex justify-content-between mb-3">
+        <!-- Botón para salir -->
+        <a href="admin.php" class="btn btn-danger">Salir</a>
+        <!-- Botón para abrir la ventana modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ventanaVenta">
+            Añadir venta
+        </button>
+    </div>
 
     <!-- Ventana modal para el formulario de venta -->
     <div class="modal fade" id="ventanaVenta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -129,8 +133,8 @@ mysqli_close($conexion); // Cierra la conexión
         </div>
     </div>
 
-    <!-- Tabla con diseño Primary -->
-    <table class="table table-bordered table-primary mt-4">
+    <!-- Tabla con diseño Info y centrado de títulos -->
+    <table class="table table-sm table-info text-center mt-4">
         <thead>
         <tr>
             <th scope="col">ID Usuario</th>
@@ -166,3 +170,4 @@ mysqli_close($conexion); // Cierra la conexión
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
