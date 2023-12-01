@@ -5,6 +5,8 @@ include "conexion.php";
 if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
+// Realizar la validación del usuario (puedes ajustar esto según tu lógica de validación)
+$conn = conectarBaseDatos($password);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificar si se han enviado los datos de inicio de sesión
@@ -12,26 +14,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        // Realizar la validación del usuario (puedes ajustar esto según tu lógica de validación)
-        $conn = conectarBaseDatos($password);
 
-        // Verificar si la conexión fue exitosa
-        if ($conn) {
-            // Verificar si el usuario es administrador o cliente (puedes ajustar esto según tu lógica)
-            $esAdministrador = true; // Ejemplo: supongamos que el usuario admin tiene acceso
 
-            // Redirigir según el tipo de usuario
-            if ($esAdministrador) {
-                
-                header("Location: admin.php");
-                exit();
-            } else {
-                header("Location: cliente.php");
-                exit();
-            }
+// Verificar si la conexión fue exitosa
+if ($conn) {
+    // Verificar si el usuario es administrador o cliente
+    $email = $_POST["email"];
+    $query = "SELECT idPuesto FROM usuario WHERE correo = '$email'";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        $idPuesto = $row['idPuesto'];
+
+        // Redirigir según el tipo de usuario
+        if ($idPuesto == 1) {
+            header("Location: admin.php");
+            exit();
+        } elseif ($idPuesto == 2) {
+            header("Location: cliente.php");
+            exit();
         } else {
-            echo "Error en la conexión a la base de datos.";
+            echo "Tipo de usuario no reconocido.";
         }
+    } else {
+        echo "Error al obtener el tipo de usuario: " . mysqli_error($conn);
+    }
+} else {
+    echo "Error en la conexión a la base de datos: " . mysqli_connect_error();
+}
     } else {
         echo "Faltan datos de inicio de sesión.";
     }
