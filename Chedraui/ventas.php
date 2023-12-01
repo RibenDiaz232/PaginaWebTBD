@@ -147,6 +147,7 @@ mysqli_close($conexion); // Cierra la conexión
                 <td><?php echo $venta['fecha']; ?></td>
                 <td><?php echo $venta['producto']; ?></td>
                 <td><?php echo $venta['cantidad']; ?></td>
+                <td>$<?php echo $venta['total']; ?></td>
                 <td>
                     <!-- Botón para eliminar compra -->
                     <a href="registro_ventas.php?eliminar_id=<?php echo $venta['idventa']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
@@ -154,7 +155,7 @@ mysqli_close($conexion); // Cierra la conexión
                     <!-- Botón para generar PDF -->
                     <a href="generar_pdf.php?idventa=<?php echo $venta['idventa']; ?>" class="btn btn-secondary btn-sm">PDF</a>
                 </td>
-                <td>$<?php echo $venta['total']; ?></td>
+                
             </tr>
         <?php endwhile; ?>
         </tbody>
@@ -162,4 +163,6 @@ mysqli_close($conexion); // Cierra la conexión
 </main>
 
 <!-- Scripts de Bootstrap 5 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
