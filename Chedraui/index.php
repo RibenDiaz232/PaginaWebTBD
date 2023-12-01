@@ -111,10 +111,7 @@ $conexion->close();
                     <a class="nav-link" href="#">Atención a Clientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contacto</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="ventas.php">ventas</a>
+                    <a class="nav-link" href="ventas.php">Contacto</a>
                 </li>
             </ul>
         </div>
