@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Calcular el total (puedes obtener el precio unitario desde la base de datos si es necesario)
 
     // Insertar la venta en la base de datos
-    $queryInsert = "INSERT INTO ventas (id_usuario, fecha, producto, cantidad) 
+    $queryInsert = "INSERT INTO ventas (idusuario, fecha, producto, cantidad) 
                     VALUES ('$idUsuario', '$fechaCompra', '$producto', '$cantidad')";
     
     $resultadoInsert = mysqli_query($conexion, $queryInsert);
@@ -84,7 +84,7 @@ mysqli_close($conexion); // Cierra la conexión
                         <!-- Campo para seleccionar ID de Usuario -->
                         <div class="mb-3">
                             <label for="id_usuario" class="form-label">ID Usuario:</label>
-                            <select class="form-select" name="id_usuario" required>
+                            <select class="form-select" name="idusuario" required>
                                 <option selected disabled>Seleccione ID de Usuario</option>
                                 <?php while ($usuario = mysqli_fetch_assoc($resultadoUsuarios)): ?>
                                     <option value="<?php echo $usuario['idusuario']; ?>"><?php echo $usuario['idusuario']; ?></option>
@@ -130,7 +130,7 @@ mysqli_close($conexion); // Cierra la conexión
         <tbody>
         <?php while ($venta = mysqli_fetch_assoc($resultado)): ?>
             <tr>
-                <td><?php echo $venta['id_usuario']; ?></td>
+                <td><?php echo $venta['idusuario']; ?></td>
                 <td><?php echo $venta['fecha']; ?></td>
                 <td><?php echo $venta['producto']; ?></td>
                 <td><?php echo $venta['cantidad']; ?></td>
