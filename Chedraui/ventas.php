@@ -15,14 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fechaCompra = date("Y-m-d H:i:s"); // Fecha actual
     $producto = $_POST['producto'];
     $cantidad = $_POST['cantidad'];
-    $precioUnitario = $_POST['precio_unitario'];
 
-    // Calcular el total
-    $total = $cantidad * $precioUnitario;
+    // Calcular el total (puedes obtener el precio unitario desde la base de datos si es necesario)
 
     // Insertar la venta en la base de datos
-    $queryInsert = "INSERT INTO ventas (id_usuario, fecha, producto, cantidad, precio, total) 
-                    VALUES ('$idUsuario', '$fechaCompra', '$producto', '$cantidad', '$precioUnitario', '$total')";
+    $queryInsert = "INSERT INTO ventas (id_usuario, fecha, producto, cantidad) 
+                    VALUES ('$idUsuario', '$fechaCompra', '$producto', '$cantidad')";
     
     $resultadoInsert = mysqli_query($conexion, $queryInsert);
 
@@ -111,15 +109,6 @@ mysqli_close($conexion); // Cierra la conexión
                             <input type="number" class="form-control" name="cantidad" required>
                         </div>
 
-                        <!-- Campo para ingresar Precio Unitario -->
-                        <div class="mb-3">
-                            <label for="precio_unitario" class="form-label">Precio Unitario:</label>
-                            <div class="input-group">
-                                <span class="input-group-text">$</span>
-                                <input type="number" class="form-control" name="precio_unitario" required>
-                            </div>
-                        </div>
-
                         <button type="submit" class="btn btn-primary">Registrar Venta</button>
                     </form>
                 </div>
@@ -130,7 +119,6 @@ mysqli_close($conexion); // Cierra la conexión
     <table class="table table-bordered mt-4">
         <thead class="table-primary">
         <tr>
-            
             <th scope="col">ID Usuario</th>
             <th scope="col">Fecha</th>
             <th scope="col">Producto</th>
@@ -141,13 +129,13 @@ mysqli_close($conexion); // Cierra la conexión
         </thead>
         <tbody>
         <?php while ($venta = mysqli_fetch_assoc($resultado)): ?>
-            <tr>                
-                <td><?php echo $idUsuario['idusuario']; ?></td>
-                <td><?php echo $fechaCompra['fecha']; ?></td>
-                <td><?php echo $producto['producto']; ?></td>
-                <td><?php echo $cantidad['cantidad']; ?></td>
-                <td>$<?php echo $precioUnitario['precio']; ?></td>
-                <td>$<?php echo $total['total']; ?></td>
+            <tr>
+                <td><?php echo $venta['id_usuario']; ?></td>
+                <td><?php echo $venta['fecha']; ?></td>
+                <td><?php echo $venta['producto']; ?></td>
+                <td><?php echo $venta['cantidad']; ?></td>
+                <td>Eliminar esta columna</td>
+                <td>$<?php echo $venta['total']; ?></td>
             </tr>
         <?php endwhile; ?>
         </tbody>
