@@ -5,6 +5,7 @@ include_once 'conexion.php';
 if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
+
 // Verificar si se ha iniciado sesión
 $botonIniciarSesion = '';
 session_start();
@@ -100,9 +101,7 @@ $conexion->close();
                     <li class="nav-item">
                         <a class="nav-link" href="#">Categoría</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ventas.php">Ventas</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="usuarios.php">Usuarios</a>
                     </li>
