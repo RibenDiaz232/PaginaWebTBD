@@ -3,19 +3,28 @@ include "conexion.php"; // Asegúrate de incluir el archivo de conexión
 
 session_start();
 
-$usuario_id = $_SESSION['usuario']['idusuario'];
+// Verifica si la sesión está iniciada y si el usuario está definido
+if (!isset($_SESSION['idusuario'])) {
+    // Redirige a la página de inicio de sesión o realiza alguna acción
+    header("Location: login1.php");
+    exit();
+}
+
+$usuario_id = $_SESSION['idusuario'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Actualizar la información del perfil
     $nombre = $_POST['nombre'];
-    $telefono = $_POST['telefono'];
     $email = $_POST['email'];
     $metodo_pago = $_POST['metodo_pago'];
     $direccion_entrega = $_POST['direccion_entrega'];
 
-    $query = "UPDATE usuario SET nombre = '$nombre', telefono = '$telefono', correo = '$email', metodo_pago = '$metodo_pago', direccion_entrega = '$direccion_entrega' WHERE idusuario = $usuario_id";
+    // Utiliza una consulta preparada para mayor seguridad
+    $query = "UPDATE usuario SET nombre = ?, correo = ?, metodo_pago = ?, direccion_entrega = ? WHERE idusuario = ?";
 
-    $resultado = mysqli_query($conexion, $query);
+    $stmt = mysqli_prepare($conexion, $query);
+    mysqli_stmt_bind_param($stmt, "ssssi", $nombre, $email, $metodo_pago, $direccion_entrega, $usuario_id);
+    $resultado = mysqli_stmt_execute($stmt);
 
     if ($resultado) {
         // Redirigir a la página del perfil con un mensaje de éxito
@@ -24,11 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "Error al actualizar el perfil: " . mysqli_error($conexion);
     }
+
+    mysqli_stmt_close($stmt);
 }
 
 // Obtener la información actual del perfil
 $query_perfil = "SELECT * FROM usuario WHERE idusuario = $usuario_id";
 $resultado_perfil = mysqli_query($conexion, $query_perfil);
+
+if (!$resultado_perfil) {
+    echo "Error al obtener la información del perfil: " . mysqli_error($conexion);
+    exit();
+}
+
 $perfil = mysqli_fetch_assoc($resultado_perfil);
 ?>
 
@@ -53,10 +70,6 @@ $perfil = mysqli_fetch_assoc($resultado_perfil);
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre:</label>
             <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $perfil['nombre']; ?>">
-        </div>
-        <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono:</label>
-            <input type="tel" class="form-control" id="telefono" name="telefono" value="<?php echo $perfil['telefono']; ?>">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Correo Electrónico:</label>
