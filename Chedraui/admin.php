@@ -111,7 +111,7 @@ $conexion->close();
                     </li>
                 </ul>
             </div>
-            
+
             <form method="GET" action="index.php" class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Buscar categoría" aria-label="Search"
                     name="categoria">
