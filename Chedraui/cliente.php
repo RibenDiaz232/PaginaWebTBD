@@ -108,6 +108,9 @@ $conexion->close();
                     <a class="nav-link" href="#">Promociones</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="ventas.php">Ventas</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">Atención a Clientes</a>
                 </li>
                 <li class="nav-item">
