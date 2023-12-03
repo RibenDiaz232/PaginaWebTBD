@@ -32,14 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Calcular el total (puedes obtener el precio unitario desde la base de datos si es necesario)
 
     // Insertar la venta en la base de datos
-    $queryInsert = "INSERT INTO ventas (id_usuario, fecha, producto, cantidad) 
+    $queryInsert = "INSERT INTO ventas (idusuario, fecha, producto, cantidad) 
                     VALUES ('$idUsuario', '$fechaCompra', '$producto', '$cantidad')";
 
     $resultadoInsert = mysqli_query($conexion, $queryInsert);
 
     if ($resultadoInsert) {
         // Redirigir con mensaje de compra exitosa
-        header("Location: registro_ventas.php?compra_exitosa=1");
+        header("Location: ventas.php");
         exit();
     } else {
         echo "Error al registrar la venta: " . mysqli_error($conexion);
@@ -156,7 +156,7 @@ mysqli_close($conexion); // Cierra la conexión
                 <?php while ($venta = mysqli_fetch_assoc($resultado)): ?>
                     <tr>
                         <td>
-                            <?php echo $venta['id_usuario']; ?>
+                            <?php echo $venta['idusuario']; ?>
                         </td>
                         <td>
                             <?php echo $venta['fecha']; ?>
@@ -173,17 +173,17 @@ mysqli_close($conexion); // Cierra la conexión
                         <td>
                             <!-- Botón para eliminar compra -->
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#confirmarEliminar<?php echo $venta['idventa']; ?>">
+                                data-bs-target="#confirmarEliminar<?php echo $venta['idventas']; ?>">
                                 Eliminar
                             </button>
 
                             <!-- Modal de confirmación -->
-                            <div class="modal fade" id="confirmarEliminar<?php echo $venta['idventa']; ?>" tabindex="-1"
+                            <div class="modal fade" id="confirmarEliminar<?php echo $venta['idventas']; ?>" tabindex="-1"
                                 aria-labelledby="confirmarEliminarLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="confirmarEliminarLabel">Confirmar Eliminación</h5>
+                                            <h5 class="modal-title" id="confirmarEliminarLabel"> Confirmar Eliminación</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -196,7 +196,7 @@ mysqli_close($conexion); // Cierra la conexión
                                                 data-bs-dismiss="modal">Cancelar</button>
 
                                             <!-- Botón para aceptar (eliminar) -->
-                                            <a href="eliminar_venta.php?idventa=<?php echo $venta['idventa']; ?>"
+                                            <a href="eliminar_venta.php?idventa=<?php echo $venta['idventas']; ?>"
                                                 class="btn btn-success">Aceptar</a>
                                         </div>
                                     </div>
