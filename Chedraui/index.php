@@ -1,28 +1,18 @@
 <?php
-include_once 'conexion.php';
-
 session_start();
 
-if (isset($_SESSION['usuario'])) {
-    $usuario = $_SESSION['usuario'];
-    $botonIniciarSesion = "<li class='nav-item dropdown'>
-                            <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                $usuario
-                            </a>
-                            <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
-                                <a class='dropdown-item' href='perfil.php'>Ver Perfil</a>
-                                <div class='dropdown-divider'></div>
-                                <a class='dropdown-item' href='logout.php'>Cerrar Sesión</a>
-                            </div>
-                          </li>";
-} else {
-    $botonIniciarSesion = "<li class='nav-item'>
-                            <a class='nav-link' href='login.php'>Iniciar Sesión</a>
-                          </li>";
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['usuario'])) {
+    // Si no ha iniciado sesión, redirigir a la página de inicio de sesión
+    header("Location: login.php");
+    exit();
 }
 
-if (!$conexion) {
-    die("No se pudo conectar a la base de datos.");
+include_once 'conexion.php';
+
+// Incluir la validación.php si se ha enviado un formulario de inicio de sesión
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    include "validacion.php";
 }
 
 $porPagina = 10;
@@ -76,7 +66,16 @@ if (!$resultadoTotal) {
 $totalProductos = $resultadoTotal->fetch_assoc()['total'];
 
 $totalPaginas = ceil($totalProductos / $porPagina);
+// Mostrar enlace de registro si el usuario no ha iniciado sesión
+if (!isset($_SESSION['usuario'])) {
+    $enlaceRegistro = "<li class='nav-item'>
+                          <a class='nav-link' href='registro.php'>Registrarse</a>
+                      </li>";
+} else {
+    $enlaceRegistro = "";  // No mostrar enlace de registro si el usuario ha iniciado sesión
+}
 
+?>
 $conexion->close();
 ?>
 
@@ -92,9 +91,7 @@ $conexion->close();
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-    <a class="navbar-brand" href="#">
-            <img src="../Chedraui/img/oxxo-gaming.png" alt="logo" width="150px">
-    </a>
+        <a class="navbar-brand" href="#">Tu Tienda</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -109,7 +106,15 @@ $conexion->close();
                 <li class="nav-item">
                     <a class="nav-link" href="#">Promociones</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" href="ventas.php">Ventas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Atención a Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Perfil</a>
+                </li>
             </ul>
         </div>
         <form method="GET" action="index.php" class="form-inline">

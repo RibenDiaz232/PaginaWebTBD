@@ -3,13 +3,6 @@ include "conexion.php"; // Asegúrate de incluir el archivo de conexión
 
 session_start();
 
-// Verifica si ya hay una sesión activa
-if (isset($_SESSION['idusuario'])) {
-    // Redirige a la página de editar perfil si ya hay una sesión activa
-    header("Location: editarperfil.php");
-    exit();
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtiene los datos del formulario
     $correo = $_POST['correo'];

@@ -1,82 +1,49 @@
 <?php
 include "conexion.php";
 
-// Verificar si se estableció una conexión
-if (!$conexion) {
-    die("No se pudo conectar a la base de datos.");
-}
-// Realizar la validación del usuario (puedes ajustar esto según tu lógica de validación)
-$conn = conectarBaseDatos($password);
+if (isset($_POST["login"])) {
+    $usuario = $_POST['email'];
+    $contraseña = $_POST['password'];
+    session_start();
+    $_SESSION['email'] = $usuario;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Verificar si se han enviado los datos de inicio de sesión
-    if (isset($_POST["email"]) && isset($_POST["password"])) {
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+    $host = "localhost";
+    $usuario_db = "root";
+    $contrasena_db = "Winsome1";
+    $base_de_datos = "chedraui";
 
+    $conexion = mysqli_connect($host, $usuario_db, $contrasena_db, $base_de_datos);
 
+    // Consulta preparada para evitar la inyección de SQL
+    $consulta = "SELECT * FROM usuario WHERE correo=? AND contraseña=?";
+    $stmt = mysqli_prepare($conexion, $consulta);
+    mysqli_stmt_bind_param($stmt, "ss", $usuario, $contraseña);
+    mysqli_stmt_execute($stmt);
 
-// Verificar si la conexión fue exitosa
-if ($conn) {
-    // Verificar si el usuario es administrador o cliente
-    $email = $_POST["email"];
-    $query = "SELECT idPuesto FROM usuario WHERE correo = '$email'";
-    $result = mysqli_query($conn, $query);
-
-    if ($result) {
-        $row = mysqli_fetch_assoc($result);
-        $idPuesto = $row['idPuesto'];
-
-        // Redirigir según el tipo de usuario
-        if ($idPuesto == 1) {
-            header("Location: admin.php");
+    // Obtiene el resultado de la consulta preparada
+    $resultado = mysqli_stmt_get_result($stmt);
+    
+    // Verifica si se encontraron filas
+    if ($resultado && $fila = mysqli_fetch_array($resultado)) {
+        if ($fila['idPuesto'] == 1) { // es el admin
+            header("location: admin.php");
             exit();
-        } elseif ($idPuesto == 2) {
-            header("Location: cliente.php");
+        } elseif ($fila['idPuesto'] == 2) { // es un cliente plebeyo
+            header("location: cliente.php");
+            $consulta = "INSERT INTO usuario (nombre, email, contraseña, idPuesto) VALUES (?, ?, ?, 2)";
+$stmt = mysqli_prepare($conexion, $consulta);
+mysqli_stmt_bind_param($stmt, "sss", $nombre, $email, $contraseña);
+mysqli_stmt_execute($stmt);
             exit();
         } else {
-            echo "Tipo de usuario no reconocido.";
+            ?>
+            <h1 class="bad">ERROR EN LA AUTENTICACION</h1>
+            <?php
+            include "index.php";
         }
-    } else {
-        echo "Error al obtener el tipo de usuario: " . mysqli_error($conn);
     }
-} else {
-    echo "Error en la conexión a la base de datos: " . mysqli_connect_error();
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conexion);
 }
-    } else {
-        echo "Faltan datos de inicio de sesión.";
-    }
-} else {
-    // Si alguien intenta acceder directamente a este archivo sin enviar datos, redirigir a la página principal
-    header("Location: index.php");
-    exit();
-}
-// ...
-
-// Iniciar sesión
-session_start();
-
-// Verificar si el usuario ha iniciado sesión
-if (isset($_SESSION['usuario'])) {
-    $usuario = $_SESSION['usuario'];
-    $botonInicioSesion = "";  // No se muestra el botón de inicio de sesión
-    $menuUsuario = "<li class='nav-item dropdown'>
-                        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                            $usuario
-                        </a>
-                        <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
-                            <a class='dropdown-item' href='perfil.php'>Ver Perfil</a>
-                            <div class='dropdown-divider'></div>
-                            <a class='dropdown-item' href='cerrar_sesion.php'>Cerrar Sesión</a>
-                        </div>
-                    </li>";
-} else {
-    $usuario = '';  // No hay usuario
-    $botonInicioSesion = "<li class='nav-item'>
-                            <a class='nav-link' href='login.php'>Iniciar Sesión</a>
-                        </li>";
-    $menuUsuario = '';  // No se muestra el menú de usuario
-}
-
-
 ?>

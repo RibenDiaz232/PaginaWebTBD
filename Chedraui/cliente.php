@@ -1,7 +1,26 @@
 <?php
+session_start();
+
 include_once 'conexion.php';
 
-session_start();
+if (isset($_SESSION['usuario'])) {
+    $usuario = $_SESSION['usuario'];
+    $menuUsuario = "<li class='nav-item dropdown'>
+                        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                            $usuario
+                        </a>
+                        <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
+                            <a class='dropdown-item' href='perfil.php'>Editar Perfil</a>
+                            <a class='dropdown-item' href='mis_compras.php'>Mis Compras</a>
+                            <div class='dropdown-divider'></div>
+                            <a class='dropdown-item' href='cerrar_sesion.php'>Cerrar Sesión</a>
+                        </div>
+                    </li>";
+} else {
+    $menuUsuario = "<li class='nav-item'>
+                        <a class='nav-link' href='login.php'>Iniciar Sesión</a>
+                    </li>";
+}
 
 if (isset($_SESSION['usuario'])) {
     $usuario = $_SESSION['usuario'];
