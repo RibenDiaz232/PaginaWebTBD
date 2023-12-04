@@ -118,9 +118,6 @@ $conexion->close();
                 <li class="nav-item">
                     <a class="nav-link" href="#">Atención a Clientes</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="editarperfil.php">Perfil</a>
-                </li>
             </ul>
         </div>
     <form method="GET" action="" class="form-inline">

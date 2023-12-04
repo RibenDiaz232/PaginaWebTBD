@@ -1,10 +1,9 @@
 <?php
-
-
 session_start();
 
 // Obtén la información del usuario desde la base de datos
 $idusuario = isset($_SESSION['idusuario']) ? $_SESSION['idusuario'] : null;
+$usuario = [];
 
 if ($idusuario) {
     // Aquí debes realizar la consulta a tu base de datos para obtener los datos del usuario
@@ -23,7 +22,7 @@ if ($idusuario) {
 
     $usuario = $resultado->fetch_assoc();
 
-    $conexion->close();
+    
 } else {
     // Handle the case when $idusuario is not set or invalid
     echo "Usuario no válido";
@@ -41,12 +40,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['nombre'];
     $telefono = $_POST['telefono'];
     $correo = $_POST['correo'];
-    $direccion = $_POST['direccion'];
+
+    // Verificar si se estableció una conexión
+    if ($conexion->connect_error) {
+        die("No se pudo conectar a la base de datos: " . $conexion->connect_error);
+    }
 
     // Aquí debes realizar las validaciones antes de actualizar la base de datos
 
     // Ejemplo: Actualiza la base de datos con los nuevos valores
-    $updateQuery = "UPDATE usuario SET nombre = '$nombre', telefono = '$telefono', correo = '$correo', direccion = '$direccion' WHERE idUsuario = $idusuario";
+    $updateQuery = "UPDATE usuario SET nombre = '$nombre', telefono = '$telefono', correo = '$correo' WHERE idUsuario = $idusuario";
 
     if ($conexion->query($updateQuery) === TRUE) {
         // Actualización exitosa
@@ -56,16 +59,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuario['nombre'] = $nombre;
         $usuario['telefono'] = $telefono;
         $usuario['correo'] = $correo;
-        $usuario['direccion'] = $direccion;
     } else {
         // Error en la actualización
         echo "<div class='alert alert-danger' role='alert'>Error al actualizar el perfil: " . $conexion->error . "</div>";
     }
 
-    // Cierra la conexión
+    // Cierra la conexión después de la actualización
     $conexion->close();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -83,8 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p>Nombre: <?php echo $usuario['nombre']; ?></p>
             <p>Teléfono: <?php echo $usuario['telefono']; ?></p>
             <p>Correo Electrónico: <?php echo $usuario['correo']; ?></p>
-            <p>Dirección: <?php echo $usuario['direccion']; ?></p>
-
             <hr>
 
             <h2>Editar Perfil</h2>
@@ -102,9 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="email" class="form-control" id="correo" name="correo" value="<?php echo $usuario['correo']; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="direccion">Dirección:</label>
-                    <textarea class="form-control" id="direccion" name="direccion"><?php echo $usuario['direccion']; ?></textarea>
-                </div>
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
             </form>
       
