@@ -53,15 +53,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($conexion->query($updateQuery) === TRUE) {
         // Actualización exitosa
-        echo "<div class='alert alert-success' role='alert'>Perfil actualizado con éxito</div>";
-
+        $mensajeExito = "Perfil actualizado con éxito";
         // Puedes actualizar la variable $usuario para que refleje los nuevos valores
         $usuario['nombre'] = $nombre;
         $usuario['telefono'] = $telefono;
         $usuario['correo'] = $correo;
     } else {
         // Error en la actualización
-        echo "<div class='alert alert-danger' role='alert'>Error al actualizar el perfil: " . $conexion->error . "</div>";
+        $mensajeError = "Error al actualizar el perfil: " . $conexion->error;
     }
 
     // Cierra la conexión después de la actualización
@@ -76,38 +75,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Perfil y Edición</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container-section {
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
         <?php if ($idusuario && $usuario): ?>
-            <h2>Perfil de <?php echo $usuario['nombre']; ?></h2>
-            <p>Nombre: <?php echo $usuario['nombre']; ?></p>
-            <p>Teléfono: <?php echo $usuario['telefono']; ?></p>
-            <p>Correo Electrónico: <?php echo $usuario['correo']; ?></p>
-            <hr>
+            <div class="container-section">
+                <h2 class="mb-4">Perfil de <?php echo $usuario['nombre']; ?></h2>
+                <p><strong>Nombre:</strong> <?php echo $usuario['nombre']; ?></p>
+                <p><strong>Teléfono:</strong> <?php echo $usuario['telefono']; ?></p>
+                <p><strong>Correo Electrónico:</strong> <?php echo $usuario['correo']; ?></p>
+            </div>
 
-            <h2>Editar Perfil</h2>
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $usuario['nombre']; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="tel" class="form-control" id="telefono" name="telefono" value="<?php echo $usuario['telefono']; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="correo">Correo Electrónico:</label>
-                    <input type="email" class="form-control" id="correo" name="correo" value="<?php echo $usuario['correo']; ?>">
-                </div>
-                <div class="form-group">
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            </form>
-      
+            <div class="container-section">
+                <h2 class="mb-4">Editar Perfil</h2>
+                <?php if (isset($mensajeExito)): ?>
+                    <div class="alert alert-success" role="alert" id="mensajeExito">
+                        <?php echo $mensajeExito; ?>
+                    </div>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        // Oculta el mensaje de éxito después de 5 segundos (5000 milisegundos)
+                        $(document).ready(function(){
+                            setTimeout(function () {
+                                $("#mensajeExito").fadeOut(1000);
+                            }, 5000);
+                        });
+                    </script>
+                <?php endif; ?>
+                <?php if (isset($mensajeError)): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo $mensajeError; ?>
+                    </div>
+                <?php endif; ?>
+                <form method="POST" action="">
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo $usuario['nombre']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono:</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" value="<?php echo $usuario['telefono']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico:</label>
+                        <input type="email" class="form-control" id="correo" name="correo" value="<?php echo $usuario['correo']; ?>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
         <?php endif; ?>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
