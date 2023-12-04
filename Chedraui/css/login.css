@@ -179,3 +179,19 @@ display: none;
   color: #ffeba7;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
 }
+<style>
+    .input-group {
+        position: relative;
+    }
+
+    .input-group-append {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .btn {
+        border-radius: 0; /* Opcional: para que el botón tenga bordes cuadrados */
+    }
+</style>

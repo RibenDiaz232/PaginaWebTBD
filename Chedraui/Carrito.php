@@ -136,7 +136,7 @@ if (isset($_GET['eliminar'])) {
         <button type="button" name="comprar" onclick="procesarCompra()" class="btn btn-success">Comprar</button>
         <form method="post" class="mx-1">
             <button type="submit" name="volver" class="btn btn-outline-secondary">
-                <a href="index.php" style="text-decoration: none; color: inherit;">Volver</a>
+                <a href="cliente.php" style="text-decoration: none; color: inherit;">Volver</a>
             </button>
         </form>
     </div>
