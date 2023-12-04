@@ -11,10 +11,10 @@ $compraExitosa = isset($_GET['compra_exitosa']) && $_GET['compra_exitosa'] == '1
 // Eliminar compra si se proporciona un ID
 if (isset($_GET['eliminar_id'])) {
     $idEliminar = $_GET['eliminar_id'];
-    $queryEliminar = "DELETE FROM ventas WHERE idventa = '$idEliminar'";
+    $queryEliminar = "DELETE FROM ventas WHERE idVenta = '$idEliminar'";
     $resultadoEliminar = mysqli_query($conexion, $queryEliminar);
     if ($resultadoEliminar) {
-        header("Location: registro_ventas.php");
+        header("Location: ventas.php");
         exit();
     } else {
         echo "Error al eliminar la compra: " . mysqli_error($conexion);
@@ -29,20 +29,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $producto = $_POST['producto'];
     $cantidad = $_POST['cantidad'];
 
-    // Calcular el total (puedes obtener el precio unitario desde la base de datos si es necesario)
+    // Consultar el precio unitario del producto desde la base de datos
+    $queryPrecioProducto = "SELECT precio FROM producto WHERE nombre = '$producto'";
+    $resultadoPrecioProducto = mysqli_query($conexion, $queryPrecioProducto);
 
-    // Insertar la venta en la base de datos
-    $queryInsert = "INSERT INTO ventas (idusuario, fecha, producto, cantidad) 
-                    VALUES ('$idUsuario', '$fechaCompra', '$producto', '$cantidad')";
+    if ($resultadoPrecioProducto) {
+        $filaPrecioProducto = mysqli_fetch_assoc($resultadoPrecioProducto);
+        $precioProducto = $filaPrecioProducto['precio'];
 
-    $resultadoInsert = mysqli_query($conexion, $queryInsert);
+        // Calcular el total
+        $total = $cantidad * $precioProducto;
 
-    if ($resultadoInsert) {
-        // Redirigir con mensaje de compra exitosa
-        header("Location: ventas.php");
-        exit();
+        // Insertar la venta en la base de datos
+        $queryInsert = "INSERT INTO ventas (idusuario, fecha, producto, cantidad, precio, total) 
+                        VALUES ('$idUsuario', '$fechaCompra', '$producto', '$cantidad', '$precioProducto', '$total')";
+
+        $resultadoInsert = mysqli_query($conexion, $queryInsert);
+
+        if ($resultadoInsert) {
+            // Redirigir con mensaje de compra exitosa
+            header("Location: ventas.php?compra_exitosa=1");
+            exit();
+        } else {
+            echo "Error al registrar la venta: " . mysqli_error($conexion);
+        }
     } else {
-        echo "Error al registrar la venta: " . mysqli_error($conexion);
+        echo "Error al obtener el precio del producto: " . mysqli_error($conexion);
     }
 }
 
@@ -55,7 +67,7 @@ $queryUsuarios = "SELECT idusuario FROM usuario";
 $resultadoUsuarios = mysqli_query($conexion, $queryUsuarios);
 
 // Consulta para obtener las opciones de productos
-$queryProductos = "SELECT nombre FROM producto";
+$queryProductos = "SELECT nombre, precio FROM producto";
 $resultadoProductos = mysqli_query($conexion, $queryProductos);
 
 mysqli_close($conexion); // Cierra la conexión
@@ -103,12 +115,12 @@ mysqli_close($conexion); // Cierra la conexión
                         <form method="post">
                             <!-- Campo para seleccionar ID de Usuario -->
                             <div class="mb-3">
-                                <label for="id_usuario" class="form-label">ID Usuario:</label>
+                                <label for="idusuario" class="form-label">ID Usuario:</label>
                                 <select class="form-select" name="idusuario" required>
                                     <option selected disabled>Seleccione ID de Usuario</option>
                                     <?php while ($usuario = mysqli_fetch_assoc($resultadoUsuarios)): ?>
                                         <option value="<?php echo $usuario['idusuario']; ?>">
-                                            <?php echo $usuario['idusuario']; ?>
+                                            <?php echo isset($usuario['idusuario']) ? $usuario['idusuario'] : ''; ?>
                                         </option>
                                     <?php endwhile; ?>
                                 </select>
@@ -121,7 +133,7 @@ mysqli_close($conexion); // Cierra la conexión
                                     <option selected disabled>Seleccione Producto</option>
                                     <?php while ($producto = mysqli_fetch_assoc($resultadoProductos)): ?>
                                         <option value="<?php echo $producto['nombre']; ?>">
-                                            <?php echo $producto['nombre']; ?>
+                                            <?php echo isset($producto['nombre']) ? $producto['nombre'] : ''; ?>
                                         </option>
                                     <?php endwhile; ?>
                                 </select>
@@ -148,6 +160,7 @@ mysqli_close($conexion); // Cierra la conexión
                     <th scope="col">Fecha</th>
                     <th scope="col">Producto</th>
                     <th scope="col">Cantidad</th>
+                    <th scope="col">Precio Unitario</th>
                     <th scope="col">Total</th>
                     <th scope="col">Eliminar compra / PDF</th>
                 </tr>
@@ -156,29 +169,32 @@ mysqli_close($conexion); // Cierra la conexión
                 <?php while ($venta = mysqli_fetch_assoc($resultado)): ?>
                     <tr>
                         <td>
-                            <?php echo $venta['idusuario']; ?>
+                            <?php echo isset($venta['idusuario']) ? $venta['idusuario'] : ''; ?>
                         </td>
                         <td>
-                            <?php echo $venta['fecha']; ?>
+                            <?php echo isset($venta['fecha']) ? $venta['fecha'] : ''; ?>
                         </td>
                         <td>
-                            <?php echo $venta['producto']; ?>
+                            <?php echo isset($venta['producto']) ? $venta['producto'] : ''; ?>
                         </td>
                         <td>
-                            <?php echo $venta['cantidad']; ?>
+                            <?php echo isset($venta['cantidad']) ? $venta['cantidad'] : ''; ?>
                         </td>
-                        <td>$
-                            <?php echo $venta['total']; ?>
+                        <td>
+                            $<?php echo isset($venta['precio']) ? $venta['precio'] : ''; ?>
+                        </td>
+                        <td>
+                            $<?php echo isset($venta['total']) ? $venta['total'] : ''; ?>
                         </td>
                         <td>
                             <!-- Botón para eliminar compra -->
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#confirmarEliminar<?php echo $venta['idventas']; ?>">
+                                data-bs-target="#confirmarEliminar<?php echo $venta['idVenta']; ?>">
                                 Eliminar
                             </button>
 
                             <!-- Modal de confirmación -->
-                            <div class="modal fade" id="confirmarEliminar<?php echo $venta['idventas']; ?>" tabindex="-1"
+                            <div class="modal fade" id="confirmarEliminar<?php echo $venta['idVenta']; ?>" tabindex="-1"
                                 aria-labelledby="confirmarEliminarLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -196,7 +212,7 @@ mysqli_close($conexion); // Cierra la conexión
                                                 data-bs-dismiss="modal">Cancelar</button>
 
                                             <!-- Botón para aceptar (eliminar) -->
-                                            <a href="eliminar_venta.php?idventa=<?php echo $venta['idventas']; ?>"
+                                            <a href="ventas.php?eliminar_id=<?php echo $venta['idVenta']; ?>"
                                                 class="btn btn-success">Aceptar</a>
                                         </div>
                                     </div>
