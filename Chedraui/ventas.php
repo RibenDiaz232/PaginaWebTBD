@@ -161,8 +161,8 @@ mysqli_close($conexion); // Cierra la conexión
                     <th scope="col">Producto</th>
                     <th scope="col">Precio Unitario</th>
                     <th scope="col">Cantidad</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Eliminar compra / PDF</th>
+                    <th scope="col">Precio total del producto </th>
+                    <th scope="col">Eliminar compra</th>
                 </tr>
             </thead>
             <tbody>
