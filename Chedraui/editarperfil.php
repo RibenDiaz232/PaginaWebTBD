@@ -1,4 +1,6 @@
 <?php
+
+
 session_start();
 
 // Obtén la información del usuario desde la base de datos
@@ -8,8 +10,11 @@ if ($idusuario) {
     // Aquí debes realizar la consulta a tu base de datos para obtener los datos del usuario
     // Reemplaza con tus propias consultas y conexión a la base de datos
     include_once 'conexion.php'; // Reemplaza con el nombre de tu archivo de conexión
-
-    $query = "SELECT * FROM usuario WHERE idUsuario = $idusuario";
+    // Verificar si se estableció una conexión
+    if (!$conexion) {
+        die("No se pudo conectar a la base de datos.");
+    }
+    $query = "SELECT * FROM usuario WHERE idusuario = $idusuario";
     $resultado = $conexion->query($query);
 
     if (!$resultado) {

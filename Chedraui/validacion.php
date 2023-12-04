@@ -1,5 +1,9 @@
 <?php
 include "conexion.php";
+// Verificar si se estableció una conexión
+if (!$conexion) {
+    die("No se pudo conectar a la base de datos.");
+}
 
 if (isset($_POST["login"])) {
     $usuario = $_POST['email'];
@@ -19,9 +23,11 @@ if (isset($_POST["login"])) {
     // Verifica si se encontraron filas
     if ($resultado && $fila = mysqli_fetch_array($resultado)) {
         if ($fila['idPuesto'] == 1) { // es el admin
+            $_SESSION['idusuario'] = $fila['idusuario'];
             header("location: admin.php");
             exit();
         } elseif ($fila['idPuesto'] == 2) { // es un cliente plebeyo
+            $_SESSION['idusuario'] = $fila['idusuario'];
             header("location: cliente.php");
             exit();
         } else {
