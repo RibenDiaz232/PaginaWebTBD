@@ -173,7 +173,7 @@ mysqli_close($conexion); // Cierra la conexión
                         <td>
                             <!-- Botón para eliminar compra -->
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#confirmarEliminar<?php echo $venta['idventa']; ?>">
+                                data-bs-target="#confirmarEliminar<?php echo $venta['idventas']; ?>">
                                 Eliminar
                             </button>
 
