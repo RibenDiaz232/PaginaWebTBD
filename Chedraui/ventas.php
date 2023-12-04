@@ -159,8 +159,8 @@ mysqli_close($conexion); // Cierra la conexión
                     <th scope="col">ID Usuario</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Producto</th>
-                    <th scope="col">Cantidad</th>
                     <th scope="col">Precio Unitario</th>
+                    <th scope="col">Cantidad</th>
                     <th scope="col">Total</th>
                     <th scope="col">Eliminar compra / PDF</th>
                 </tr>
@@ -178,13 +178,15 @@ mysqli_close($conexion); // Cierra la conexión
                             <?php echo isset($venta['producto']) ? $venta['producto'] : ''; ?>
                         </td>
                         <td>
+                            $
+                            <?php echo isset($venta['precio']) ? $venta['precio'] : ''; ?>
+                        </td>
+                        <td>
                             <?php echo isset($venta['cantidad']) ? $venta['cantidad'] : ''; ?>
                         </td>
                         <td>
-                            $<?php echo isset($venta['precio']) ? $venta['precio'] : ''; ?>
-                        </td>
-                        <td>
-                            $<?php echo isset($venta['total']) ? $venta['total'] : ''; ?>
+                            $
+                            <?php echo isset($venta['total']) ? $venta['total'] : ''; ?>
                         </td>
                         <td>
                             <!-- Botón para eliminar compra -->
