@@ -18,7 +18,7 @@ if (mysqli_num_rows($checkTableResult) == 0) {
     die("La tabla 'usuario' no existe en la base de datos.");
 }
 
-$usuario = array('nombre' => '', 'telefono' => '', 'correo' => ''); // Inicializa el array para evitar el error
+$usuario = array('nombre' => '', 'telefono' => '', 'correo' => '', 'idPuesto' => ''); // Inicializa el array para evitar el error
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -27,8 +27,9 @@ if (isset($_GET['id'])) {
         $nombre = $_POST['nombre'];
         $telefono = $_POST['telefono'];
         $correo = $_POST['correo'];
-        
-        $consulta = "UPDATE usuario SET nombre = ?, telefono = ?, correo = ? WHERE idusuario = ?";
+        $idPuesto = $_POST['idPuesto'];
+
+        $consulta = "UPDATE usuario SET nombre = ?, telefono = ?, correo = ?, idPuesto = ? WHERE idusuario = ?";
         $stmt = mysqli_prepare($conexion, $consulta);
 
         // Verificar si hay algún error en la preparación de la consulta
@@ -36,7 +37,7 @@ if (isset($_GET['id'])) {
             die("Error en la preparación de la consulta: " . mysqli_error($conexion));
         }
 
-        mysqli_stmt_bind_param($stmt, "sssi", $nombre, $telefono, $correo, $id);
+        mysqli_stmt_bind_param($stmt, "ssssi", $nombre, $telefono, $correo, $idPuesto, $id);
         $resultado = mysqli_stmt_execute($stmt);
 
         if ($resultado) {
@@ -99,6 +100,7 @@ mysqli_close($conexion);
                     <th scope="col">Nombre del Usuario</th>
                     <th scope="col">Número de teléfono</th>
                     <th scope="col">Correo electrónico</th>
+                    <th scope="col">Puesto</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,6 +109,7 @@ mysqli_close($conexion);
                     <td><input type="text" name="nombre" value="<?php echo $usuario['nombre']; ?>" class="form-control"></td>
                     <td><input type="text" name="telefono" value="<?php echo $usuario['telefono']; ?>" class="form-control"></td>
                     <td><input type="text" name="correo" value="<?php echo $usuario['correo']; ?>" class="form-control"></td>
+                    <td><input type="text" name="idPuesto" value="<?php echo $usuario['idPuesto']; ?>" class="form-control"></td>
                 </tr>
             </tbody>
         </table>
@@ -117,4 +120,6 @@ mysqli_close($conexion);
 
     <!-- Incluye el script de Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.co
+    <script src="https://cdnjs.cloudflare.co...
+</body>
+</html>

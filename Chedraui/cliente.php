@@ -1,29 +1,7 @@
 <?php
-include_once 'conexion.php';
-
 session_start();
 
-if (isset($_SESSION['usuario'])) {
-    $usuario = $_SESSION['usuario'];
-    $botonIniciarSesion = "<li class='nav-item dropdown'>
-                            <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                $usuario
-                            </a>
-                            <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
-                                <a class='dropdown-item' href='perfil.php'>Ver Perfil</a>
-                                <div class='dropdown-divider'></div>
-                                <a class='dropdown-item' href='logout.php'>Cerrar Sesión</a>
-                            </div>
-                          </li>";
-} else {
-    $botonIniciarSesion = "<li class='nav-item'>
-                            <a class='nav-link' href='login.php'>Iniciar Sesión</a>
-                          </li>";
-}
-
-if (!$conexion) {
-    die("No se pudo conectar a la base de datos.");
-}
+include_once 'conexion.php';
 
 $porPagina = 10;
 $paginaActual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
@@ -92,14 +70,16 @@ $conexion->close();
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="#">Tu Tienda</a>
+        <a class="navbar-brand" href="#">
+            <img src="../Chedraui/img/CHEDRAJI_WEB.png" alt="logo" width="150px">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Inicio</a>
+                    <a class="nav-link" href="cliente.php">Inicio</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Categoría</a>
@@ -114,16 +94,22 @@ $conexion->close();
                     <a class="nav-link" href="#">Atención a Clientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="perfil.php">Perfil</a>
+                    <a class="nav-link" href="editarperfil.php">Perfil</a>
                 </li>
             </ul>
         </div>
-        <form method="GET" action="index.php" class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Buscar categoría" aria-label="Search" name="categoria">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-        </form>
+        <form method="GET" action="" class="form-inline">
+    <div class="input-group">
+        <input class="form-control mr-sm-2" type="search" placeholder="Buscar categoría" aria-label="Search" name="categoria" value="<?php echo $categoriaSeleccionada; ?>">
+        <div class="input-group-append">
+            <button class="btn btn-outline-success" type="submit">
+                <ion-icon name="search-outline"></ion-icon>
+            </button>
+        </div>
+    </div>
+</form>
+
         <ul class="navbar-nav ml-auto">
-            <?php echo $botonIniciarSesion; ?>
             <li class="nav-item">
                 <a class="nav-link" href="carrito.php">
                     <i class="fas fa-shopping-cart"></i> Carrito
@@ -164,6 +150,8 @@ $conexion->close();
     </nav>
 </div>
 
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -6,17 +6,6 @@ if (!$conexion) {
     die("No se pudo conectar a la base de datos.");
 }
 
-// Verificar si se ha iniciado sesión
-$botonIniciarSesion = '';
-session_start();
-if (isset($_SESSION['usuario'])) {
-    // Usuario ha iniciado sesión, mostrar botón de cerrar sesión
-    $botonIniciarSesion = '<a href="cerrar_sesion.php" class="btn btn-danger">Cerrar Sesión</a>';
-} else {
-    // Usuario no ha iniciado sesión, mostrar botón de iniciar sesión
-    $botonIniciarSesion = '<a href="login.php" class="btn btn-primary">Iniciar Sesión</a>';
-}
-
 // Configurar la paginación
 $porPagina = 10; // Número de productos por página
 $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Página actual
@@ -88,7 +77,7 @@ $conexion->close();
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="#">Tu Tienda</a>
+        <img src="../Chedraui/img/CHEDRAJI_WEB.png" alt="logo" width="150px"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
