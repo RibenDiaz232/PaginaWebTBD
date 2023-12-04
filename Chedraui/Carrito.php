@@ -54,13 +54,11 @@ if (isset($_GET['eliminar'])) {
         unset($_SESSION['carrito'][$productoId]);
     }
 }
-
-// Cerrar la sesión
-// session_destroy();
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Carrito de Compras</title>
@@ -83,91 +81,168 @@ if (isset($_GET['eliminar'])) {
         }
 
         @keyframes moverCarrito {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(50px); }
-            100% { transform: translateX(0); }
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(50px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
+
 <body>
-<main class="container">
-    <h1 class="text-center">Carrito de Compras</h1>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Total</th>
-            <th>Eliminar</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($_SESSION['carrito'] as $productoId => $producto): ?>
-            <tr>
-                <td><?php echo $producto['nombre']; ?></td>
-                <td>$<?php echo $producto['precio']; ?></td>
-                <td>
-                    <form method="POST">
-                        <input type="hidden" name="actualizar[<?php echo $productoId; ?>]" value="1">
-                        <input type="number" name="cantidad[<?php echo $productoId; ?>]"
-                               value="<?php echo $producto['cantidad']; ?>" min="1" class="form-control">
-                        <input type="submit" value="Actualizar" class="btn btn-primary">
+    <?php
+    // Mostrar errores de PHP
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    ?>
+    <main class="container">
+        <h1 class="text-center mb-4">Carrito de Compras</h1>
+
+        <!-- Botón para abrir la ventana modal de agregar producto -->
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregarProducto">
+            Agregar Producto al Carrito
+        </button>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($_SESSION['carrito'] as $productoId => $producto): ?>
+                    <tr>
+                        <td>
+                            <?php echo $producto['nombre']; ?>
+                        </td>
+                        <td>$
+                            <?php echo $producto['precio']; ?>
+                        </td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="actualizar[<?php echo $productoId; ?>]" value="1">
+                                <input type="number" name="cantidad[<?php echo $productoId; ?>]"
+                                    value="<?php echo $producto['cantidad']; ?>" min="1" class="form-control">
+                                <input type="submit" value="Actualizar" class="btn btn-primary">
+                            </form>
+                        </td>
+                        <td>$
+                            <?php echo $producto['cantidad'] * $producto['precio']; ?>
+                        </td>
+                        <td>
+                            <a href="?eliminar=<?php echo $productoId; ?>" class="btn btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <h2 class="text-center">Total del Carrito: $
+            <?php
+            $totalCarrito = 0;
+            foreach ($_SESSION['carrito'] as $productoId => $producto) {
+                $totalCarrito += $producto['cantidad'] * $producto['precio'];
+            }
+            echo $totalCarrito;
+            ?>
+        </h2>
+
+        <div class="d-flex justify-content-center">
+            <button type="button" name="comprar" onclick="procesarCompra()" class="btn btn-success">Comprar</button>
+            <form method="post" class="mx-1">
+                <button type="submit" name="volver" class="btn btn-outline-secondary">
+                    <a href="cliente.php" style="text-decoration: none; color: inherit;">Volver</a>
+                </button>
+            </form>
+        </div>
+
+        <!-- Elemento para mostrar la animación de "Procesando Compra" -->
+        <div id="animacionProceso" class="procesando-container">
+            <div class="carrito">&#128722;</div>
+            Procesando Compra...
+        </div>
+    </main>
+
+    <!-- Ventana modal para agregar producto al carrito -->
+    <div class="modal fade" id="agregarProducto" tabindex="-1" aria-labelledby="agregarProductoLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarProductoLabel">Agregar Producto al Carrito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="GET" action="carrito.php">
+                        <!-- Campo para seleccionar Producto -->
+                        <div class="mb-3">
+                            <label for="producto" class="form-label">Producto:</label>
+                            <select class="form-select" name="agregar" required>
+                                <option selected disabled>Seleccione Producto</option>
+                                <?php
+                                include "conexion.php"; // Incluye el archivo de conexión
+                                
+                                $query = "SELECT idProducto, nombre FROM producto";
+                                $resultado = mysqli_query($conexion, $query);
+
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value=\"{$row['idProducto']}\">{$row['nombre']}</option>";
+                                }
+
+                                mysqli_close($conexion); // Cierra la conexión
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary me-2"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Añadir al Carrito</button>
+                        </div>
                     </form>
-                </td>
-                <td>$<?php echo $producto['cantidad'] * $producto['precio']; ?></td>
-                <td>
-                    <a href="?eliminar=<?php echo $productoId; ?>" class="btn btn-danger">Eliminar</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <h2 class="text-center">Total del Carrito: $<?php
-        $totalCarrito = 0;
-        foreach ($_SESSION['carrito'] as $productoId => $producto) {
-            $totalCarrito += $producto['cantidad'] * $producto['precio'];
-        }
-        echo $totalCarrito;
-        ?></h2>
-
-    <div class="d-flex justify-content-center">
-        <button type="button" name="comprar" onclick="procesarCompra()" class="btn btn-success">Comprar</button>
-        <form method="post" class="mx-1">
-            <button type="submit" name="volver" class="btn btn-outline-secondary">
-                <a href="cliente.php" style="text-decoration: none; color: inherit;">Volver</a>
-            </button>
-        </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Elemento para mostrar la animación de "Procesando Compra" -->
-    <div id="animacionProceso" class="procesando-container">
-        <div class="carrito">&#128722;</div>
-        Procesando Compra...
-    </div>
-</main>
 
-<script>
-    function procesarCompra() {
-        // Oculta el botón de "Comprar"
-        document.querySelector('[name="comprar"]').style.display = 'none';
+    <form method="POST">
+        <table class="table">
 
-        // Muestra la animación de "Procesando Compra"
-        document.getElementById('animacionProceso').style.display = 'flex';
+            <script>
+                function procesarCompra() {
+                    // Oculta el botón de "Comprar"
+                    document.querySelector('[name="comprar"]').style.display = 'none';
 
-        // Simula una demora de 5 segundos (5000 milisegundos) antes de mostrar "Compra Exitosa"
-        setTimeout(function () {
-            // Oculta la animación de "Procesando Compra"
-            document.getElementById('animacionProceso').style.display = 'none';
+                    // Muestra la animación de "Procesando Compra"
+                    document.getElementById('animacionProceso').style.display = 'flex';
 
-            // Muestra "Compra Exitosa"
-            alert("Compra exitosa");
+                    // Simula una demora de 5 segundos (5000 milisegundos) antes de redirigir a "ventas.php"
+                    setTimeout(function () {
+                        // Oculta la animación de "Procesando Compra"
+                        document.getElementById('animacionProceso').style.display = 'none';
 
-            // Después de mostrar "Compra Exitosa"
-            location.reload(); // Recarga la página para ejecutar la lógica de guardar las ventas
-        }, 5000); // 5000 milisegundos (5 segundos)
-    }
-</script>
+                        // Redirige a "ventas.php"
+                        window.location.href = 'ventas.php';
+                    }, 5000); // 5000 milisegundos (5 segundos)
+                }
+            </script>
+
+
+            <!-- Scripts de Bootstrap 5 -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
