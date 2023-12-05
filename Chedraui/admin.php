@@ -115,10 +115,7 @@ $conexion->close();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="usuarios.php">Usuarios</a>
-                    </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="ventas.php">Venta</a>
-                    </li>
+                    
                         <a class="nav-link" href="listadeproductos.php">Agregar los productos</a>
                     </li>
                 </ul>

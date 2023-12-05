@@ -26,7 +26,9 @@ if (isset($_GET['agregar'])) {
             $_SESSION['carrito'][$productoId] = [
                 'nombre' => $producto['nombre'],
                 'precio' => $producto['precio'],
-                'cantidad' => 1
+                'cantidad' => 1,
+                'IdCliente' => $_SESSION['idusuario'],
+                'fecha' => date("Y-m-d") // Fecha actual
             ];
         }
 
@@ -230,13 +232,23 @@ if (isset($_GET['eliminar'])) {
                     document.getElementById('animacionProceso').style.display = 'flex';
 
                     // Simula una demora de 5 segundos (5000 milisegundos) antes de redirigir a "ventas.php"
-                    setTimeout(function () {
-                        // Oculta la animación de "Procesando Compra"
-                        document.getElementById('animacionProceso').style.display = 'none';
 
-                        // Redirige a "ventas.php"
-                        window.location.href = 'ventas.php';
-                    }, 5000); // 5000 milisegundos (5 segundos)
+
+                    fetch("realizarCompra.php", {
+                        method: "post"
+                    })
+                        .then(respuesta => respuesta.text())
+                        .then(respuesta => {
+                            if (respuesta == "exito") {
+                                setTimeout(function () {
+                                    // Oculta la animación de "Procesando Compra"
+                                    document.getElementById('animacionProceso').style.display = 'none';
+                                    window.location.href = 'ventas.php';
+                                }, 5000); // 5000 milisegundos (5 segundos)
+                            }
+                        })
+
+
                 }
             </script>
 
